@@ -5,5 +5,11 @@
   "author": "Firebox Technology",
   "main": "main.js",
   "menus": {
+      "Developer/CodeEditor/Ace Kitchen": {
+          "message": "code-editor:ace-kitchen"
+      },
+      "Developer/CodeEditor/CodeMirror Kitchen": {
+          "message": "code-editor:cm-kitchen"
+      }
   }
 }
