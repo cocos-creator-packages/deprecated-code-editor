@@ -5,27 +5,5 @@
   "author": "Firebox Technology",
   "main": "main.js",
   "menus": {
-  },
-  "panels": {
-    "panel": {
-      "frame": "panel/code-editor.html",
-      "type": "dockable",
-      "title": "Code Editor",
-      "width": 800,
-      "height": 600,
-      "messages": [
-      ],
-      "profiles": {
-        "global": {
-          "theme": "zenburn",
-          "tabSize": 2,
-          "keyMap": "sublime",
-          "lineNumbers": true,
-          "fontSize": 14,
-          "fontFamily": "DejaVu Sans Mono",
-          "autoComplete": true
-        }
-      }
-    }
   }
 }
