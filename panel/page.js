@@ -15,7 +15,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
     autoComplete: true,
     value: text,
     extraKeys: {
-      'Ctrl-S': onsave
+      'Ctrl-S': onsave,
+      'Cmd-S': onsave
     }
   });
 
