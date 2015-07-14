@@ -5,9 +5,6 @@
   "author": "Firebox Technology",
   "main": "main.js",
   "menus": {
-      "File/Save File(Ctrl-S)": {
-          "message": "code-editor:save"
-      },
       "Developer/CodeEditor/Ace Kitchen": {
           "message": "code-editor:ace-kitchen"
       },

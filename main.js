@@ -7,7 +7,7 @@ module.exports = {
     unload: function () {},
 
     'code-editor:open-by-uuid': function ( uuid ) {
-        // Editor.Panel.open('code-editor.panel', { uuid: uuid } );
+
         win = new Editor.Window('code-editor', {
             'title': 'Fireball - Code Editor',
             'width': 960,
@@ -16,6 +16,13 @@ module.exports = {
             'min-height': 300,
             'show': true,
             'resizable': true,
+        });
+        Editor.MainMenu.add('File', {
+            'label': 'Save',
+            'message': 'code-editor:save'
+        });
+        win.nativeWin.on('closed', function () {
+            Editor.MainMenu.remove('File/Save');
         });
         win.load( 'packages://code-editor/panel/index.html', {path: Editor.assetdb.uuidToFspath(uuid)} );
     },
