@@ -1,14 +1,10 @@
 module.exports = {
-    load: function () {
-    },
+    load: function () {},
 
-    unload: function () {
-    },
+    unload: function () {},
 
     'code-editor:open-by-uuid': function ( uuid ) {
         // Editor.Panel.open('code-editor.panel', { uuid: uuid } );
-        var codemirror = 'index.html';
-        var ace = 'ace.html';
         var win = new Editor.Window('code-editor', {
             'title': 'Fireball - Code Editor',
             'width': 960,
@@ -18,7 +14,7 @@ module.exports = {
             'show': true,
             'resizable': true,
         });
-        win.load( 'packages://code-editor/panel/' + ace, {path: Editor.assetdb.uuidToFspath(uuid)} );
+        win.load( 'packages://code-editor/panel/index.html', {path: Editor.assetdb.uuidToFspath(uuid)} );
     },
 
     'code-editor:open-by-path': function ( path ) {
