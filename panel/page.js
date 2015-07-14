@@ -1,6 +1,10 @@
+
+var Fs = require('fire-fs');
+var Ipc = require('ipc');
+
 document.addEventListener("DOMContentLoaded", function(event) {
-  var fs = require('fire-fs');
-  var text = fs.readFileSync(Editor.argv.path, 'utf8');
+  var path = Editor.argv.path;
+  var text = Fs.readFileSync(path, 'utf8');
   var editor = CodeMirror(document.body, {
     mode: 'javascript',
     theme: "zenburn",
@@ -16,7 +20,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
   });
 
   function onsave (context) {
-    fs.writeFile(Editor.argv.path, context.getValue(), 'utf8');
+    Fs.writeFile(path, context.getValue(), 'utf8');
   }
+
+  Ipc.on('file.save', function () {
+    onsave(editor);
+  });
 
 });
