@@ -2,17 +2,33 @@
   <head>
     <title>Code Editor</title>
     <link rel="stylesheet" href="../codemirror-5.4/lib/codemirror.css">
-    <link rel="stylesheet" href="../codemirror-5.4/theme/zenburn.css">
+    <link rel="stylesheet" href="../codemirror-5.4/theme/material.css">
     <style type="text/css">
-      body { margin: 0; padding: 0; }
-      .CodeMirror { min-height: 720px; }
+      @font-face {
+        font-family: 'DejaVu Sans Mono';
+        src: url('app://canvas-studio/static/fonts/DejaVuSansMono.ttf');
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: 'DejaVu Sans Mono';
+      }
+
+      .CodeMirror {
+        height: 100%;
+        font-size: 14px;
+      }
     </style>
-    <script type="text/javascript" src="editor-framework://page/page-init.js"></script>
-    <script src="../codemirror-5.4/lib/codemirror.js"></script>
+
+    <script type="text/javascript" src="../codemirror-5.4/lib/codemirror.js"></script>
     <script type="text/javascript" src="../codemirror-5.4/keymap/sublime.js"></script>
     <script type="text/javascript" src="../codemirror-5.4/keymap/vim.js"></script>
     <script type="text/javascript" src="../codemirror-5.4/keymap/emacs.js"></script>
-    <script src="../codemirror-5.4/mode/javascript/javascript.js"></script>
+    <script type="text/javascript" src="../codemirror-5.4/mode/javascript/javascript.js"></script>
+    <script type="text/javascript" src="editor-framework://page/page-init.js"></script>
     <script type="text/javascript" src="packages://code-editor/panel/page.js"></script>
   </head>
   <body></body>

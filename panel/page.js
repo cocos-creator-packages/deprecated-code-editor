@@ -1,18 +1,17 @@
-
 var Fs = require('fire-fs');
 var Ipc = require('ipc');
 
-document.addEventListener("DOMContentLoaded", function(event) {
+document.addEventListener('DOMContentLoaded', function(event) {
   var url = Editor.argv.url;
   var path = Editor.argv.path;
   var text = Fs.readFileSync(path, 'utf8');
   var editor = CodeMirror(document.body, {
     mode: 'javascript',
-    theme: "zenburn",
+    theme: 'material',
     tabSize: 2,
-    keyMap: "sublime",
+    keyMap: 'sublime',
     lineNumbers: true,
-    fontFamily: "DejaVu Sans Mono",
+    fontFamily: 'DejaVu Sans Mono',
     autoComplete: true,
     value: text,
     extraKeys: {
