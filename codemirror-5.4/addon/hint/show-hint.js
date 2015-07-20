@@ -16,24 +16,26 @@
 
   // This is the old interface, kept around for now to stay
   // backwards-compatible.
-  CodeMirror.showHint = function(cm, getHints, options) {
-    if (!getHints) return cm.showHint(options);
+  CodeMirror.showHint = function(cm, getHints, options, key) {
+    if (!getHints) return cm.showHint(options, key);
     if (options && options.async) getHints.async = true;
     var newOpts = {hint: getHints};
     if (options) for (var prop in options) newOpts[prop] = options[prop];
-    return cm.showHint(newOpts);
+    return cm.showHint(newOpts, key);
   };
 
-  CodeMirror.defineExtension("showHint", function(options) {
+  CodeMirror.defineExtension("showHint", function(options, key) {
     // We want a single cursor position.
     if (this.listSelections().length > 1 || this.somethingSelected()) return;
-
-    if (this.state.completionActive) this.state.completionActive.close();
-    var completion = this.state.completionActive = new Completion(this, options);
-    if (!completion.options.hint) return;
-
+    var completion = this.state.completionActive;
+    if (!completion) {
+      completion = new Completion(this, options);
+    }
+    if (!completion || !completion.options.hint) {
+      return;
+    }
     CodeMirror.signal(this, "startCompletion", this);
-    completion.update(true);
+    completion.update(true, key);
   });
 
   function Completion(cm, options) {
@@ -46,6 +48,7 @@
     this.startLen = this.cm.getLine(this.startPos.line).length;
 
     var self = this;
+    this.cm.state.completionActive = this;
     cm.on("cursorActivity", this.activityFunc = function() { self.cursorActivity(); });
   }
 
@@ -57,6 +60,7 @@
   Completion.prototype = {
     close: function() {
       if (!this.active()) return;
+      this.options.input = '';
       this.cm.state.completionActive = null;
       this.tick = null;
       this.cm.off("cursorActivity", this.activityFunc);
@@ -97,11 +101,17 @@
       }
     },
 
-    update: function(first) {
+    update: function(first, key) {
       if (this.tick == null) return;
       if (this.data) CodeMirror.signal(this.data, "update");
+
+      // define the input character
+      this.options.input += key.replace(/'/g, "");
+
+      // start run hint function in sync or async
       if (!this.options.hint.async) {
-        this.finishUpdate(this.options.hint(this.cm, this.options), first);
+        var hint = this.options.hint(this.cm, this.options);
+        this.finishUpdate(hint, first);
       } else {
         var myTick = ++this.tick, self = this;
         this.options.hint(this.cm, function(data) {
@@ -127,7 +137,7 @@
 
     buildOptions: function(options) {
       var editor = this.cm.options.hintOptions;
-      var out = {};
+      var out = {'input': ''};
       for (var prop in defaultOptions) out[prop] = defaultOptions[prop];
       if (editor) for (var prop in editor)
         if (editor[prop] !== undefined) out[prop] = editor[prop];
@@ -268,7 +278,10 @@
 
     CodeMirror.on(hints, "dblclick", function(e) {
       var t = getHintElement(hints, e.target || e.srcElement);
-      if (t && t.hintId != null) {widget.changeActive(t.hintId); widget.pick();}
+      if (t && t.hintId != null) {
+        widget.changeActive(t.hintId); 
+        widget.pick();
+      }
     });
 
     CodeMirror.on(hints, "click", function(e) {
@@ -319,7 +332,7 @@
       else if (i < 0)
         i = avoidWrap ? 0  : this.data.list.length - 1;
       if (this.selectedHint == i) return;
-      var node = this.hints.childNodes[this.selectedHint];
+      var node = this.hints.childNodes[this.selectedHint];55 
       node.className = node.className.replace(" " + ACTIVE_HINT_ELEMENT_CLASS, "");
       node = this.hints.childNodes[this.selectedHint = i];
       node.className += " " + ACTIVE_HINT_ELEMENT_CLASS;

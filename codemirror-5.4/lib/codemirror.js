@@ -3970,7 +3970,7 @@
   // KEY EVENTS
 
   // Run a handler that was bound to a key.
-  function doHandleBinding(cm, bound, dropShift) {
+  function doHandleBinding(cm, bound, dropShift, key) {
     if (typeof bound == "string") {
       bound = commands[bound];
       if (!bound) return false;
@@ -3982,7 +3982,7 @@
     try {
       if (isReadOnly(cm)) cm.state.suppressEdits = true;
       if (dropShift) cm.display.shift = false;
-      done = bound(cm) != Pass;
+      done = bound(cm, undefined, undefined, key) != Pass;
     } finally {
       cm.display.shift = prevShift;
       cm.state.suppressEdits = false;
@@ -4013,7 +4013,6 @@
       name = seq + " " + name;
     }
     var result = lookupKeyForEditor(cm, name, handle);
-
     if (result == "multi")
       cm.state.keySeq = name;
     if (result == "handled")
@@ -4040,20 +4039,24 @@
       // First try to resolve full name (including 'Shift-'). Failing
       // that, see if there is a cursor-motion command (starting with
       // 'go') bound to the keyname without 'Shift-'.
-      return dispatchKey(cm, "Shift-" + name, e, function(b) {return doHandleBinding(cm, b, true);})
-          || dispatchKey(cm, name, e, function(b) {
-               if (typeof b == "string" ? /^go[A-Z]/.test(b) : b.motion)
-                 return doHandleBinding(cm, b);
-             });
+      return dispatchKey(cm, "Shift-" + name, e, function(b, key) {
+        return doHandleBinding(cm, b, true, key);
+      }) || dispatchKey(cm, name, e, function(b, key) {
+        if (typeof b == "string" ? /^go[A-Z]/.test(b) : b.motion)
+          return doHandleBinding(cm, b, undefined, key);
+      });
     } else {
-      return dispatchKey(cm, name, e, function(b) { return doHandleBinding(cm, b); });
+      return dispatchKey(cm, name, e, function(b, key) { 
+        return doHandleBinding(cm, b, undefined, key);
+      });
     }
   }
 
   // Handle a key from the keypress event
   function handleCharBinding(cm, e, ch) {
-    return dispatchKey(cm, "'" + ch + "'", e,
-                       function(b) { return doHandleBinding(cm, b, true); });
+    return dispatchKey(cm, "'" + ch + "'", e, function(b, key) {
+      return doHandleBinding(cm, b, true, key);
+    });
   }
 
   var lastStoppedKey = null;
@@ -4100,12 +4103,26 @@
 
   function onKeyPress(e) {
     var cm = this;
-    if (eventInWidget(cm.display, e) || signalDOMEvent(cm, e) || e.ctrlKey && !e.altKey || mac && e.metaKey) return;
+    if (eventInWidget(cm.display, e) || 
+      signalDOMEvent(cm, e) || 
+      e.ctrlKey && 
+      !e.altKey || 
+      mac && e.metaKey) {
+      return;
+    };
     var keyCode = e.keyCode, charCode = e.charCode;
-    if (presto && keyCode == lastStoppedKey) {lastStoppedKey = null; e_preventDefault(e); return;}
-    if ((presto && (!e.which || e.which < 10)) && handleKeyBinding(cm, e)) return;
+    if (presto && keyCode == lastStoppedKey) {
+      lastStoppedKey = null; 
+      e_preventDefault(e);
+      return;
+    }
+    if ((presto && (!e.which || e.which < 10)) && handleKeyBinding(cm, e)) {
+      return;
+    }
     var ch = String.fromCharCode(charCode == null ? keyCode : charCode);
-    if (handleCharBinding(cm, e, ch)) return;
+    if (handleCharBinding(cm, e, ch)) {
+      return;
+    }
     cm.display.input.onKeyPress(e);
   }
 
@@ -5738,7 +5755,7 @@
     var found = map.call ? map.call(key, context) : map[key];
     if (found === false) return "nothing";
     if (found === "...") return "multi";
-    if (found != null && handle(found)) return "handled";
+    if (found != null && handle(found, key)) return "handled";
 
     if (map.fallthrough) {
       if (Object.prototype.toString.call(map.fallthrough) != "[object Array]")

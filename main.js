@@ -17,8 +17,7 @@ module.exports = {
             'show': true,
             'resizable': true,
         });
-        Editor.MainMenu.add('File', {
-            'label': 'Save',
+        Editor.MainMenu.add('File/Save', {
             'message': 'code-editor:save'
         });
         win.nativeWin.on('closed', function () {

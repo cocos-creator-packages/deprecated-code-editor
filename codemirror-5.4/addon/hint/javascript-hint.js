@@ -141,6 +141,10 @@
         gatherCompletions(global);
       forEach(keywords, maybeAdd);
     }
-    return found;
+
+    // filter
+    return (found || []).filter(function(item) {
+      return (new RegExp('^' + options.input)).test(item);
+    });
   }
 });
