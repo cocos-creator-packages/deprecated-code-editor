@@ -109,6 +109,17 @@
       this.options.input += key.replace(/'/g, "");
 
       // start run hint function in sync or async
+      this._update(first);
+    },
+
+    updateByThis: function(first) {
+      if (this.tick == null) return;
+      if (this.data) CodeMirror.signal(this.data, "update");
+      // start run hint function in sync or async
+      this._update(first);
+    },
+
+    _update: function(first) {
       if (!this.options.hint.async) {
         var hint = this.options.hint(this.cm, this.options);
         this.finishUpdate(hint, first);
@@ -160,6 +171,15 @@
       PageDown: function() {handle.moveFocus(handle.menuSize() - 1, true);},
       Home: function() {handle.setFocus(0);},
       End: function() {handle.setFocus(handle.length - 1);},
+      Backspace: function() {
+        var input = completion.options.input;
+        completion.options.input = input.slice(0, -1);
+        if (completion.options.input.length >= 1) {
+          completion.updateByThis(true);
+        } else {
+          completion.close();
+        }
+      },
       Enter: handle.pick,
       Tab: handle.pick,
       Esc: handle.close
