@@ -23,11 +23,14 @@ module.exports = {
         win.nativeWin.on('closed', function () {
             Editor.MainMenu.remove('File/Save');
         });
-        win.load( 'packages://code-editor/panel/index.html', {path: Editor.assetdb.uuidToFspath(uuid)} );
+        win.load( 'packages://code-editor/panel/index.html', {
+          url: Editor.assetdb.uuidToUrl(uuid),
+          path: Editor.assetdb.uuidToFspath(uuid),
+        });
     },
 
     'code-editor:save': function () {
-        win.nativeWin.webContents.send('file.save');
+        win.nativeWin.webContents.send('code-editor:save-from-page');
     },
 
     'code-editor:open-by-path': function ( path ) {
