@@ -106,7 +106,9 @@
       if (this.data) CodeMirror.signal(this.data, "update");
 
       // define the input character
-      this.options.input += key.replace(/'/g, "");
+      if (key) {
+        this.options.input += key.replace(/'/g, "");
+      }
 
       // start run hint function in sync or async
       this._update(first);

@@ -75,10 +75,21 @@ option to <code>"sublime"</code>.</p>
     showCursorWhenSelecting: true,
     theme: "monokai",
     extraKeys: function (context) {
-      if (this[0] === "'" && 
-        this[2] === "'" && 
-        /[a-z0-9]/i.test(this[1])) {
-        return 'autocomplete';
+      var key = this + '';
+      var cur = editor.getCursor();
+      var tok = editor.getTokenAt(cur);
+      switch (tok.type) {
+        case 'string':
+        case 'comment':
+        case 'keyword':
+        case 'variable':
+        case 'number':
+        case 'property': break;
+        default:
+          console.log(tok, key);
+          if (/(var|function)/.test(tok.state.lastType)) break;
+          if (/'[0-9]{1}'/.test(key) && tok.state.lastType === 'operator') break;
+          if (/'[a-z0-9]{1}'/i.test(key)) return 'autocomplete';
       }
     }
   });
