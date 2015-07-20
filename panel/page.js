@@ -6,17 +6,23 @@ document.addEventListener('DOMContentLoaded', function(event) {
   var path = Editor.argv.path;
   var text = Fs.readFileSync(path, 'utf8');
   var editor = CodeMirror(document.body, {
-    mode: 'javascript',
-    theme: 'material',
-    tabSize: 2,
-    keyMap: 'sublime',
-    lineNumbers: true,
-    fontFamily: 'DejaVu Sans Mono',
-    autoComplete: true,
-    value: text,
-    extraKeys: {
-      'Ctrl-S': onSave,
-      'Cmd-S': onSave
+    'mode': 'javascript',
+    'theme': 'material',
+    'tabSize': 2,
+    'keyMap': 'sublime',
+    'lineNumbers': true,
+    'fontFamily': 'DejaVu Sans Mono',
+    'autoComplete': true,
+    'showCursorWhenSelecting': true,
+    'value': text,
+    'extraKeys': function (context) {
+      var key = this + '';
+      if (key === 'Cmd-S' || key === 'Ctrl-S') {
+        onSave(context);
+      } else if (/'[a-z0-9]{1}'/i.test(key)) {
+        // disable autocomplete
+        // return 'autocomplete';
+      }
     }
   });
 
