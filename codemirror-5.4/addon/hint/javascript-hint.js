@@ -52,7 +52,7 @@
       if (!context) var context = [];
       context.push(tprop);
     }
-    return {list: getCompletions(token, context, keywords, options),
+    return {list: getCompletions(token, context, keywords, options, editor),
             from: Pos(cur.line, token.start),
             to: Pos(cur.line, token.end)};
   }
@@ -97,7 +97,7 @@
   var coffeescriptKeywords = ("and break catch class continue delete do else extends false finally for " +
                   "if in instanceof isnt new no not null of off on or return switch then throw true try typeof until void while with yes").split(" ");
 
-  function getCompletions(token, context, keywords, options) {
+  function getCompletions(token, context, keywords, options, editor) {
     var found = [], start = token.string, global = options && options.globalScope || window;
     function maybeAdd(str) {
       if (str.lastIndexOf(start, 0) == 0 && !arrayContains(found, str)) found.push(str);
@@ -142,8 +142,11 @@
       forEach(keywords, maybeAdd);
     }
 
+    // concat the intellisense
+    found = editor.intellisense.concat(found || []);
+
     // filter
-    return (found || []).filter(function(item) {
+    return found.filter(function(item) {
       return (new RegExp('^' + options.input)).test(item);
     });
   }

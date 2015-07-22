@@ -1,10 +1,20 @@
 var Fs = require('fire-fs');
 var Ipc = require('ipc');
+var Path = require('path');
+var Firedoc = require('firedoc-api').Firedoc;
+var Intellisense = function (ast) {
+  return Object.keys(ast.classes);
+};
 
 document.addEventListener('DOMContentLoaded', function(event) {
   var url = Editor.argv.url;
   var path = Editor.argv.path;
   var text = Fs.readFileSync(path, 'utf8');
+  var enginePath = Path.join(__dirname, '../../engine-framework/src');
+  var doc = new Firedoc({
+    path: enginePath,
+    parseOnly: true
+  });
   var editor = CodeMirror(document.body, {
     'mode': 'javascript',
     'theme': 'material',
@@ -44,9 +54,11 @@ document.addEventListener('DOMContentLoaded', function(event) {
           return 'autocomplete';
         }
       }
-
-
     }
+  });
+
+  doc.build(function (err, ast, opt) {
+    editor.intellisense = Intellisense(ast);
   });
 
   function onSave (context) {
