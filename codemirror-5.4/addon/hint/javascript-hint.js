@@ -119,7 +119,6 @@
       // If this is a property, see if it belongs to some object we can
       // find in the current environment.
       var obj = context.shift(), base;
-      console.log(obj, context.length);
       if (obj.type == "variable") {
         var parent = editor.intellisense.get(obj.string);
         if (parent && parent.members) {
@@ -150,6 +149,9 @@
         }
       } else if (obj.type == "string") {
         base = "";
+      } else if (obj.type == null && obj.string == ")") {
+
+
       }
       if (base != null) {
         gatherCompletions(base);
@@ -172,7 +174,8 @@
     if (options.input[0] === '.')
       options.input = options.input.slice(1);
     return found.filter(function(item) {
-      return (new RegExp('^' + options.input)).test(item);
+      var reg = new RegExp('^' + options.input.replace(/[\(\)]/g, ''));
+      return (reg.test(item));
     });
   }
 });
