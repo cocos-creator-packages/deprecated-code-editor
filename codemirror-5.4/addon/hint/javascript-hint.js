@@ -114,10 +114,14 @@
       // find in the current environment.
       var obj = context.pop(), base;
       if (obj.type && obj.type.indexOf("variable") === 0) {
+        var parent = editor.intellisense.get(obj.string);
+        if (parent && parent.members)
+          base = parent.members || {};
         if (options && options.additionalContext)
           base = options.additionalContext[obj.string];
         if (!options || options.useGlobalScope !== false)
           base = base || global[obj.string];
+        console.log(base);
       } else if (obj.type == "string") {
         base = "";
       } else if (obj.type == "atom") {

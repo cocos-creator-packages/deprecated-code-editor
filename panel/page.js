@@ -3,7 +3,20 @@ var Ipc = require('ipc');
 var Path = require('path');
 var Firedoc = require('firedoc-api').Firedoc;
 var Intellisense = function (ast) {
-  return Object.keys(ast.classes);
+  var classesKeys = Object.keys(ast.classes);
+  var modulesKeys = Object.keys(ast.modules);
+  var ret = classesKeys.concat(modulesKeys);
+  ast.members.forEach(function (member) {
+    var parent = member.parent || ast.modules[member.module];
+    if (!parent.members || parent.members.length === 0) {
+      parent.members = {};
+    }
+    parent.members[member.name] = member;
+  });
+  ret.get = function (name) {
+    return ast.classes[name] || ast.modules[name];
+  };
+  return ret;
 };
 
 document.addEventListener('DOMContentLoaded', function(event) {
