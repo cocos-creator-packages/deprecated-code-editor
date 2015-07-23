@@ -115,12 +115,14 @@
       var obj = context.pop(), base;
       if (obj.type && obj.type.indexOf("variable") === 0) {
         var parent = editor.intellisense.get(obj.string);
-        if (parent && parent.members)
+        if (parent && parent.members) {
           base = parent.members || {};
-        if (options && options.additionalContext)
-          base = options.additionalContext[obj.string];
-        if (!options || options.useGlobalScope !== false)
-          base = base || global[obj.string];
+        } else {
+          if (options && options.additionalContext)
+            base = options.additionalContext[obj.string];
+          if (!options || options.useGlobalScope !== false)
+            base = base || global[obj.string];
+        }
         console.log(base);
       } else if (obj.type == "string") {
         base = "";
@@ -144,12 +146,12 @@
       if (!options || options.useGlobalScope !== false)
         gatherCompletions(global);
       forEach(keywords, maybeAdd);
+      found = editor.intellisense.concat(found || []);
     }
 
-    // concat the intellisense
-    found = editor.intellisense.concat(found || []);
-
     // filter
+    if (options.input[0] === '.')
+      options.input = options.input.slice(1);
     return found.filter(function(item) {
       return (new RegExp('^' + options.input)).test(item);
     });
