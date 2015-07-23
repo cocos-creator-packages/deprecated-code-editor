@@ -138,9 +138,12 @@
         }).join('.');
         var parent = editor.intellisense.get(ns);
         if (!parent) {
-          base = editor.intellisense.get(ns + '.' + obj.string) || {};
+          base = editor.intellisense.get(ns + '.' + obj.string).members;
         } else {
           base = parent.members[obj.string];
+        }
+        if (!base) {
+          base = editor.intellisense.get(ns + '.' + obj.string).members;
         }
       } else if (obj.type == "string") {
         base = "";

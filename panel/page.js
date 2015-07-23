@@ -12,7 +12,6 @@ var Intellisense = function (ast) {
     if (!parent.members || parent.members.length === 0) {
       parent.members = {};
     }
-    // console.log(member);
     if (member.itemtype === 'method') {
       parent.members[member.name] = function () {};
     } else if (member.itemtype === 'property') {
@@ -20,7 +19,7 @@ var Intellisense = function (ast) {
         var type = member.type.replace(/[\{\}]/g, '').split('.').pop();
         var isArray = /\[\]$/.test(type);
         if (isArray) {
-          parent.members[member.name] = 'Array';
+          parent.members[member.name] = [];
         } else {
           parent.members[member.name] = type;
         }
