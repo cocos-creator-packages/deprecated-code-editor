@@ -113,6 +113,7 @@
       // If this is a property, see if it belongs to some object we can
       // find in the current environment.
       var obj = context.pop(), base;
+      console.log(obj);
       if (obj.type && obj.type.indexOf("variable") === 0) {
         var parent = editor.intellisense.get(obj.string);
         if (parent && parent.members) {
@@ -123,7 +124,6 @@
           if (!options || options.useGlobalScope !== false)
             base = base || global[obj.string];
         }
-        console.log(base);
       } else if (obj.type == "string") {
         base = "";
       } else if (obj.type == "atom") {

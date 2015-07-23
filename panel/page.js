@@ -48,12 +48,12 @@ document.addEventListener('DOMContentLoaded', function(event) {
         onSave(context);
         return;
       }
+      console.log(tok);
       switch (tok.type) {
       case 'string':
       case 'comment':
       case 'keyword':
-      case 'number':
-      case 'property': break;
+      case 'number': break;
       default:
         if (/^(var|function)$/.test(tok.state.lastType)) break;
         if (/'[0-9]{1}'/.test(key) && tok.state.lastType === 'operator') break;
