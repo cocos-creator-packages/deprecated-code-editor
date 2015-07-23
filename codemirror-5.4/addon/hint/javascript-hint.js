@@ -119,6 +119,7 @@
       // If this is a property, see if it belongs to some object we can
       // find in the current environment.
       var obj = context.shift(), base;
+      console.log(obj, context.length);
       if (obj.type == "variable") {
         var parent = editor.intellisense.get(obj.string);
         if (parent && parent.members) {
@@ -138,12 +139,14 @@
         }).join('.');
         var parent = editor.intellisense.get(ns);
         if (!parent) {
-          base = editor.intellisense.get(ns + '.' + obj.string).members;
+          parent = editor.intellisense.get(ns + '.' + obj.string);
+          if (parent) base = parent.members;
         } else {
           base = parent.members[obj.string];
         }
         if (!base) {
-          base = editor.intellisense.get(ns + '.' + obj.string).members;
+          parent = editor.intellisense.get(ns + '.' + obj.string);
+          if (parent) base = parent.members;
         }
       } else if (obj.type == "string") {
         base = "";
