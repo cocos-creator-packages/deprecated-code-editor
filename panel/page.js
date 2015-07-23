@@ -3,6 +3,7 @@ var Ipc = require('ipc');
 var Path = require('path');
 var Firedoc = require('firedoc-api').Firedoc;
 var Intellisense = function (ast) {
+  var nsMap = ast.namespacesMap;
   var classesKeys = Object.keys(ast.classes);
   var modulesKeys = Object.keys(ast.modules);
   var ret = classesKeys.concat(modulesKeys);
@@ -11,7 +12,20 @@ var Intellisense = function (ast) {
     if (!parent.members || parent.members.length === 0) {
       parent.members = {};
     }
-    parent.members[member.name] = member;
+    // console.log(member);
+    if (member.itemtype === 'method') {
+      parent.members[member.name] = function () {};
+    } else if (member.itemtype === 'property') {
+      try {
+        var type = member.type.replace(/[\{\}]/g, '').split('.').pop();
+        var isArray = /\[\]$/.test(type);
+        if (isArray) {
+          parent.members[member.name] = 'Array';
+        } else {
+          parent.members[member.name] = type;
+        }
+      } catch (e) {}
+    }
   });
   ret.get = function (name) {
     return ast.classes[name] || ast.modules[name];
@@ -48,7 +62,6 @@ document.addEventListener('DOMContentLoaded', function(event) {
         onSave(context);
         return;
       }
-      console.log(tok);
       switch (tok.type) {
       case 'string':
       case 'comment':

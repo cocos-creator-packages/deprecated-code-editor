@@ -103,18 +103,23 @@
       if (str.lastIndexOf(start, 0) == 0 && !arrayContains(found, str)) found.push(str);
     }
     function gatherCompletions(obj) {
-      if (typeof obj == "string") forEach(stringProps, maybeAdd);
-      else if (obj instanceof Array) forEach(arrayProps, maybeAdd);
-      else if (obj instanceof Function) forEach(funcProps, maybeAdd);
+      if (obj === "Boolean") {
+        return;
+      } else if (typeof obj == "string") {
+        forEach(stringProps, maybeAdd);
+      } else if (typeof obj == "function") {
+        forEach(funcProps, maybeAdd);
+      } else if (Array.isArray(obj)) {
+        forEach(arrayProps, maybeAdd);
+      }
       for (var name in obj) maybeAdd(name);
     }
 
     if (context && context.length) {
       // If this is a property, see if it belongs to some object we can
       // find in the current environment.
-      var obj = context.pop(), base;
-      console.log(obj);
-      if (obj.type && obj.type.indexOf("variable") === 0) {
+      var obj = context.shift(), base;
+      if (obj.type == "variable") {
         var parent = editor.intellisense.get(obj.string);
         if (parent && parent.members) {
           base = parent.members || {};
@@ -124,29 +129,37 @@
           if (!options || options.useGlobalScope !== false)
             base = base || global[obj.string];
         }
+        while (base != null && context.length) {
+          base = base[context.pop().string];
+        }
+      } else if (obj.type == "property") {
+        var ns = (context || []).map(function (item) {
+          return item && item.string;
+        }).join('.');
+        var parent = editor.intellisense.get(ns);
+        if (!parent) {
+          base = editor.intellisense.get(ns + '.' + obj.string) || {};
+        } else {
+          base = parent.members[obj.string];
+        }
       } else if (obj.type == "string") {
         base = "";
-      } else if (obj.type == "atom") {
-        base = 1;
-      } else if (obj.type == "function") {
-        if (global.jQuery != null && (obj.string == '$' || obj.string == 'jQuery') &&
-            (typeof global.jQuery == 'function'))
-          base = global.jQuery();
-        else if (global._ != null && (obj.string == '_') && (typeof global._ == 'function'))
-          base = global._();
       }
-      while (base != null && context.length)
-        base = base[context.pop().string];
-      if (base != null) gatherCompletions(base);
+      if (base != null) {
+        gatherCompletions(base);
+      }
     } else {
       // If not, just look in the global object and any local scope
       // (reading into JS mode internals to get at the local and global variables)
       for (var v = token.state.localVars; v; v = v.next) maybeAdd(v.name);
       for (var v = token.state.globalVars; v; v = v.next) maybeAdd(v.name);
-      if (!options || options.useGlobalScope !== false)
-        gatherCompletions(global);
+      // if (!options || options.useGlobalScope !== false)
+      //   gatherCompletions(global);
       forEach(keywords, maybeAdd);
-      found = editor.intellisense.concat(found || []);
+      // setup intellisense
+      editor.intellisense.forEach(function (name) {
+        if (found.indexOf(name) === -1) found.push(name);
+      });
     }
 
     // filter
