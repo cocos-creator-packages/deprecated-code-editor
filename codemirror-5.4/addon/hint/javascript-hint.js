@@ -118,28 +118,23 @@
     if (context && context.length) {
       // If this is a property, see if it belongs to some object we can
       // find in the current environment.
+      var fn = function (item) { return item && item.string; };
+      var ns = context.reverse().map(fn).join('.');
       var obj = context.shift(), base;
+      var parent = editor.intellisense.get(ns);
+      console.log(ns, parent, obj);
+
       if (obj.type == "variable") {
-        var parent = editor.intellisense.get(obj.string);
-        if (parent && parent.members) {
-          base = parent.members || {};
+        if (parent) {
+          base = parent.next;
         } else {
           if (options && options.additionalContext)
             base = options.additionalContext[obj.string];
           if (!options || options.useGlobalScope !== false)
             base = base || global[obj.string];
         }
-        while (base != null && context.length) {
-          base = base[context.pop().string];
-        }
       } else if (obj.type == "property") {
-        var ns = (context || []).map(function (item) {
-          return item && item.string;
-        }).join('.') + '.' + obj.string;
-        var parent = editor.intellisense.get(ns);
-        if (parent) {
-          base = parent.members || parent;
-        }
+        base = parent.next;
       } else if (obj.type == "string") {
         base = "";
       } else if (obj.type == "call") {

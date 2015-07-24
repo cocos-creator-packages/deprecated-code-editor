@@ -13,10 +13,10 @@ module.exports = {
     },
 
     'code-editor:open-by-uuid': function ( uuid ) {
-        var enginePath = Path.join( __dirname, '../engine-framework/src' );
+        var enginePath = Path.join( __dirname, '../../engine-framework/src' );
         var doc = new Firedoc( {
             cwd: enginePath,
-            path: enginePath,
+            paths: [enginePath],
             parseOnly: true
         } );
         doc.build( function( err, ast, opt ) {
