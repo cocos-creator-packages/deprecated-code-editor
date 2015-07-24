@@ -13,6 +13,7 @@
     }
   },
   "dependencies": {
-    "firedoc-api": "^1.0.1"
+    "firedoc-api": "^1.0.1",
+    "firedoc-intellisense": "^1.0.1"
   }
 }

@@ -1,14 +1,28 @@
 
-var win;
+var win, _ast;
+var Path = require('path');
+var Firedoc = require('firedoc-api').Firedoc;
 
 module.exports = {
-    load: function () {},
+    load: function () {
+        var enginePath = Path.join( __dirname, '../engine-framework/src' );
+        var doc = new Firedoc( {
+            cwd: enginePath,
+            path: enginePath,
+            parseOnly: true
+        } );
+        doc.build( function( err, ast, opt ) {
+            _ast = ast;
+            intellisense = Intellisense(ast);
+        } );
+    },
 
-    unload: function () {},
+    unload: function () {
+        intellisense = null;
+    },
 
     'code-editor:open-by-uuid': function ( uuid ) {
-
-        win = new Editor.Window('code-editor', {
+        win = new Editor.Window( 'code-editor', {
             'title': 'Fireball - Code Editor',
             'width': 960,
             'height': 720,
@@ -16,21 +30,24 @@ module.exports = {
             'min-height': 300,
             'show': true,
             'resizable': true,
-        });
-        Editor.MainMenu.add('File/Save', {
+        } );
+        Editor.MainMenu.add( 'File/Save', {
             'message': 'code-editor:save'
-        });
-        win.nativeWin.on('closed', function () {
+        } );
+        win.nativeWin.on( 'closed', function() {
             Editor.MainMenu.remove('File/Save');
-        });
+        } );
         win.load( 'packages://code-editor/panel/index.html', {
-          url: Editor.assetdb.uuidToUrl(uuid),
-          path: Editor.assetdb.uuidToFspath(uuid),
-        });
+            url: Editor.assetdb.uuidToUrl( uuid ),
+            path: Editor.assetdb.uuidToFspath( uuid ),
+        } );
+        win.nativeWin.webContents.on( 'did-finish-load', function() {
+            win.nativeWin.webContents.send( 'code-editor:ast', _ast );
+        } );
     },
 
     'code-editor:save': function () {
-        win.nativeWin.webContents.send('code-editor:save-from-page');
+        win.nativeWin.webContents.send( 'code-editor:save-from-page' );
     },
 
     'code-editor:open-by-path': function ( path ) {
