@@ -29,6 +29,9 @@ var Intellisense = function (ast) {
   ret.get = function (name) {
     return ast.classes[name] || ast.modules[name];
   };
+  ret.getByNs = function (name) {
+    return nsMap[name];
+  }
   return ret;
 };
 
@@ -70,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
       default:
         if (/^(var|function)$/.test(tok.state.lastType)) break;
         if (/'[0-9]{1}'/.test(key) && tok.state.lastType === 'operator') break;
-        if (/'[a-z0-9\.\(\)]{1}'/i.test(key)) {
+        if (/'[a-z0-9\.]{1}'/i.test(key)) {
           editor.replaceRange(key[1], cur, {
             'line': cur.line,
             'xRel': cur.xRel,

@@ -98,7 +98,9 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
       return ret("number", "number");
     } else if (ch == "." && stream.match("..")) {
       return ret("spread", "meta");
-    } else if (/[\[\]{}\(\),;\:\.]/.test(ch)) {
+    } else if (/[\(\)]/.test(ch)) {
+      return ret(ch, 'call');
+    } else if (/[\[\]{},;\:\.]/.test(ch)) {
       return ret(ch);
     } else if (ch == "=" && stream.eat(">")) {
       return ret("=>", "operator");

@@ -45,9 +45,9 @@
 
     var tprop = token;
     // If it is a property, find out what it is a property of.
-    while (tprop.type == "property") {
+    while (tprop.type == "property" || tprop.type == "call") {
       tprop = getToken(editor, Pos(cur.line, tprop.start));
-      if (tprop.string != ".") return;
+      if (tprop.string != "." && tprop.type == "property") return;
       tprop = getToken(editor, Pos(cur.line, tprop.start));
       if (!context) var context = [];
       context.push(tprop);
@@ -141,7 +141,7 @@
           parent = editor.intellisense.get(ns + '.' + obj.string);
           if (parent) base = parent.members;
         } else {
-          base = parent.members[obj.string];
+          // base = parent.members[obj.string];
         }
         if (!base) {
           parent = editor.intellisense.get(ns + '.' + obj.string);
@@ -149,9 +149,23 @@
         }
       } else if (obj.type == "string") {
         base = "";
-      } else if (obj.type == null && obj.string == ")") {
-
-
+      } else if (obj.type == "call") {
+        var stack = (context || []).reverse();
+        var ns = stack.map(function (item) {
+          return item && item.string;
+        }).join('.');
+        var item = editor.intellisense.getByNs(ns);
+        var returned = (item || {})["return"];
+        if (returned && returned.type) {
+          // doesn't support multiple returned value
+          var originalType = returned.type.split('|')[0];
+          var type = editor.intellisense.getByNs(originalType);
+          if (!type || !type.members) {
+            base = originalType;
+          } else {
+            base = type.members;
+          }
+        }
       }
       if (base != null) {
         gatherCompletions(base);
