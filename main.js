@@ -2,26 +2,23 @@
 var win, _ast;
 var Path = require('path');
 var Firedoc = require('firedoc-api').Firedoc;
+var enginePath = Path.join( __dirname, '../../engine-framework/src' );
+var doc;
 
 module.exports = {
     load: function () {
-        // TODO
+        doc = new Firedoc( {
+            cwd: enginePath,
+            paths: [ enginePath ],
+            parseOnly: true
+        } );
     },
 
     unload: function () {
         _ast = null;
     },
 
-    'code-editor:open-by-uuid': function ( uuid ) {
-        var enginePath = Path.join( __dirname, '../../engine-framework/src' );
-        var doc = new Firedoc( {
-            cwd: enginePath,
-            paths: [enginePath],
-            parseOnly: true
-        } );
-        doc.build( function( err, ast, opt ) {
-            _ast = ast;
-        } );
+    'code-editor:open-by-uuid': function( uuid ) {
         win = new Editor.Window( 'code-editor', {
             'title': 'Fireball - Code Editor',
             'width': 960,
@@ -48,11 +45,11 @@ module.exports = {
         } );
     },
 
-    'code-editor:save': function () {
+    'code-editor:save': function() {
         win.nativeWin.webContents.send( 'code-editor:save-from-page' );
     },
 
-    'code-editor:open-by-path': function ( path ) {
+    'code-editor:open-by-path': function( path ) {
         var win = new Editor.Window('code-editor', {
             'title': 'Fireball - Canvas Studio',
             'width': 1280,
@@ -65,7 +62,7 @@ module.exports = {
         win.load( 'packages://code-editor/panel/' + ace, {path: path} );
     },
 
-    'code-editor:ace-kitchen': function () {
+    'code-editor:ace-kitchen': function() {
         var win = new Editor.Window('code-editor', {
             'title': 'Fireball - Code Editor',
             'width': 960,
@@ -75,10 +72,10 @@ module.exports = {
             'show': true,
             'resizable': true,
         });
-        win.load( 'packages://code-editor/ace-1.1.9/kitchen-sink.html');
+        win.load( 'packages://code-editor/ace-1.1.9/kitchen-sink.html' );
     },
 
-    'code-editor:cm-kitchen': function () {
+    'code-editor:cm-kitchen': function() {
         var win = new Editor.Window('code-editor', {
             'title': 'Fireball - Code Editor',
             'width': 960,
@@ -88,6 +85,6 @@ module.exports = {
             'show': true,
             'resizable': true,
         });
-        win.load( 'packages://code-editor/codemirror-5.4/index.html');
+        win.load( 'packages://code-editor/codemirror-5.4/index.html' );
     },
 };
