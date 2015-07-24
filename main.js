@@ -13,12 +13,11 @@ module.exports = {
         } );
         doc.build( function( err, ast, opt ) {
             _ast = ast;
-            intellisense = Intellisense(ast);
         } );
     },
 
     unload: function () {
-        intellisense = null;
+        _ast = null;
     },
 
     'code-editor:open-by-uuid': function ( uuid ) {
