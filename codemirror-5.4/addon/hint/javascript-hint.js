@@ -135,17 +135,10 @@
       } else if (obj.type == "property") {
         var ns = (context || []).map(function (item) {
           return item && item.string;
-        }).join('.');
+        }).join('.') + '.' + obj.string;
         var parent = editor.intellisense.get(ns);
-        if (!parent) {
-          parent = editor.intellisense.get(ns + '.' + obj.string);
-          if (parent) base = parent.members;
-        } else {
-          // base = parent.members[obj.string];
-        }
-        if (!base) {
-          parent = editor.intellisense.get(ns + '.' + obj.string);
-          if (parent) base = parent.members;
+        if (parent) {
+          if (parent)
         }
       } else if (obj.type == "string") {
         base = "";
@@ -154,7 +147,7 @@
         var ns = stack.map(function (item) {
           return item && item.string;
         }).join('.');
-        var item = editor.intellisense.getByNs(ns);
+        var item = editor.intellisense.get(ns);
         var returned = (item || {})["return"];
         if (returned && returned.type) {
           // doesn't support multiple returned value

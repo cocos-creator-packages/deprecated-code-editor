@@ -53,7 +53,6 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
   Ipc.on('code-editor:ast', function (ast) {
     editor.intellisense = Intellisense(ast);
-    console.log(editor.intellisense);
   });
 
   Ipc.on('code-editor:save-from-page', function () {

@@ -5,6 +5,14 @@ var Firedoc = require('firedoc-api').Firedoc;
 
 module.exports = {
     load: function () {
+        // TODO
+    },
+
+    unload: function () {
+        _ast = null;
+    },
+
+    'code-editor:open-by-uuid': function ( uuid ) {
         var enginePath = Path.join( __dirname, '../engine-framework/src' );
         var doc = new Firedoc( {
             cwd: enginePath,
@@ -14,13 +22,6 @@ module.exports = {
         doc.build( function( err, ast, opt ) {
             _ast = ast;
         } );
-    },
-
-    unload: function () {
-        _ast = null;
-    },
-
-    'code-editor:open-by-uuid': function ( uuid ) {
         win = new Editor.Window( 'code-editor', {
             'title': 'Fireball - Code Editor',
             'width': 960,
