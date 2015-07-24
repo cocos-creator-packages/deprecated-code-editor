@@ -138,7 +138,7 @@
         }).join('.') + '.' + obj.string;
         var parent = editor.intellisense.get(ns);
         if (parent) {
-          if (parent)
+          base = parent.members || parent;
         }
       } else if (obj.type == "string") {
         base = "";

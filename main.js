@@ -42,7 +42,9 @@ module.exports = {
             path: Editor.assetdb.uuidToFspath( uuid ),
         } );
         win.nativeWin.webContents.on( 'did-finish-load', function() {
-            win.nativeWin.webContents.send( 'code-editor:ast', _ast );
+            doc.build( function ( err, ast, opt ) {
+                win.nativeWin.webContents.send( 'code-editor:ast', ast );
+            } );
         } );
     },
 
