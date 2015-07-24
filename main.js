@@ -1,5 +1,5 @@
 
-var win, _ast;
+var win;
 var Path = require('path');
 var Firedoc = require('firedoc-api').Firedoc;
 var enginePath = Path.join( __dirname, '../../engine-framework/src' );
@@ -22,33 +22,38 @@ module.exports = {
     },
 
     unload: function () {
-        _ast = null;
+        win.close();
+        win = null;
     },
 
     'code-editor:open-by-uuid': function( uuid ) {
-        win = new Editor.Window( 'code-editor', {
-            'title': 'Fireball - Code Editor',
-            'width': 960,
-            'height': 720,
-            'min-width': 300,
-            'min-height': 300,
-            'show': true,
-            'resizable': true,
-        } );
-        Editor.MainMenu.add( 'File/Save', {
-            'message': 'code-editor:save'
-        } );
-        win.nativeWin.on( 'closed', function() {
-            Editor.MainMenu.remove('File/Save');
-        } );
+        if (!win) {
+            win = new Editor.Window( 'code-editor', {
+                'title': 'Fireball - Code Editor',
+                'width': 960,
+                'height': 720,
+                'min-width': 300,
+                'min-height': 300,
+                'show': true,
+                'resizable': true,
+            } );
+            Editor.MainMenu.add( 'File/Save', {
+                'message': 'code-editor:save'
+            } );
+            win.nativeWin.on( 'closed', function() {
+                Editor.MainMenu.remove('File/Save');
+            } );
+            win.nativeWin.webContents.on( 'did-finish-load', function() {
+                doc.build( function ( err, ast, opt ) {
+                    win.nativeWin.webContents.send( 'code-editor:ast', ast );
+                } );
+            } );
+        } else {
+            win.focus();
+        }
         win.load( 'packages://code-editor/panel/index.html', {
             url: Editor.assetdb.uuidToUrl( uuid ),
             path: Editor.assetdb.uuidToFspath( uuid ),
-        } );
-        win.nativeWin.webContents.on( 'did-finish-load', function() {
-            doc.build( function ( err, ast, opt ) {
-                win.nativeWin.webContents.send( 'code-editor:ast', ast );
-            } );
         } );
     },
 
