@@ -3,13 +3,20 @@ var win, _ast;
 var Path = require('path');
 var Firedoc = require('firedoc-api').Firedoc;
 var enginePath = Path.join( __dirname, '../../engine-framework/src' );
+var editorPath = Path.join( __dirname, '../../editor-framework' );
+var runtimePath = Editor.runtimePath;
+
 var doc;
 
 module.exports = {
     load: function () {
         doc = new Firedoc( {
             cwd: enginePath,
-            paths: [ enginePath ],
+            paths: [ 
+                enginePath,
+                editorPath,
+                runtimePath
+            ],
             parseOnly: true
         } );
     },
