@@ -143,7 +143,11 @@
             base = base || global[obj.string];
         }
       } else if (obj.type == "property") {
-        base = parent.next;
+        if (Object.keys(parent.next).length) {
+          base = parent.next;
+        } else if (parent.itemtype == "method") {
+          base = function () {};
+        }
       } else if (obj.type == "string") {
         base = "";
       } else if (obj.type == "call") {
