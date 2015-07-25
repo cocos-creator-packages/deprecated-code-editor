@@ -1,5 +1,6 @@
 
 var win;
+var Util = require('util');
 var Path = require('path');
 var Firedoc = require('firedoc-api').Firedoc;
 var enginePath = Path.join( __dirname, '../../engine-framework/src' );
@@ -22,12 +23,14 @@ module.exports = {
     },
 
     unload: function () {
-        win.close();
+        if ( win && typeof win.close === 'function' ) {
+            win.close();
+        }
         win = null;
     },
 
     'code-editor:open-by-uuid': function( uuid ) {
-        if (!win) {
+        if (!win || !win.focus) {
             win = new Editor.Window( 'code-editor', {
                 'title': 'Fireball - Code Editor',
                 'width': 960,
@@ -42,6 +45,7 @@ module.exports = {
             } );
             win.nativeWin.on( 'closed', function() {
                 Editor.MainMenu.remove('File/Save');
+                win = null;
             } );
             win.nativeWin.webContents.on( 'did-finish-load', function() {
                 doc.build( function ( err, ast, opt ) {
