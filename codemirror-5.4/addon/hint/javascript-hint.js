@@ -174,8 +174,9 @@
     }
 
     // filter
-    if (options.input[0] === '.')
-      options.input = options.input.slice(1);
+    options.input = options.input.slice(
+      options.input.lastIndexOf('.')
+    );
     return found.filter(function(item) {
       var reg = new RegExp('^' + options.input.replace(/[\(\)]/g, ''));
       return (reg.test(item));
