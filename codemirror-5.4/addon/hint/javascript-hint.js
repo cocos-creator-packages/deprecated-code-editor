@@ -118,9 +118,18 @@
     if (context && context.length) {
       // If this is a property, see if it belongs to some object we can
       // find in the current environment.
-      var fn = function (item) { return item && item.string; };
-      var ns = context.reverse().map(fn).join('.');
-      var obj = context.shift(), base;
+      var mapN = function (item) { 
+        return item && item.string; 
+      };
+      var filterN = function (item) {
+        return item != ')';
+      };
+      var ns = context
+        .reverse()
+        .map(mapN)
+        .filter(filterN)
+        .join(".");
+      var obj = context[context.length - 1], base;
       var parent = editor.intellisense.get(ns);
       console.log(ns, parent, obj);
 
@@ -138,22 +147,10 @@
       } else if (obj.type == "string") {
         base = "";
       } else if (obj.type == "call") {
-        var stack = (context || []).reverse();
-        var ns = stack.map(function (item) {
-          return item && item.string;
-        }).join('.');
-        var item = editor.intellisense.get(ns);
-        var returned = (item || {})["return"];
-        if (returned && returned.type) {
-          // doesn't support multiple returned value
-          var originalType = returned.type.split('|')[0];
-          var type = editor.intellisense.getByNs(originalType);
-          if (!type || !type.members) {
-            base = originalType;
-          } else {
-            base = type.members;
-          }
-        }
+        try {
+          var rettype = editor.intellisense.get(parent["return"].type);
+          base = rettype.next;
+        } catch (e) {}
       }
       if (base != null) {
         gatherCompletions(base);
