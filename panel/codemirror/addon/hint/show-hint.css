@@ -5,31 +5,41 @@
   list-style: none;
 
   margin: 0;
-  padding: 1px;
+  padding: 2px;
 
   border-radius: 1px;
-  border: 1px solid silver;
+  border: 1px solid #444;
 
   background: white;
-  font-size: 90%;
-  font-family: monospace;
+  font-size: 13px;
+  font-family: 'DejaVu Sans Mono';
 
+  min-width: 20em;
   max-height: 20em;
   overflow-y: auto;
 }
 
 .CodeMirror-hint {
   margin: 0;
-  padding: 0 4px;
+  padding: 2px 4px;
   border-radius: 1px;
-  max-width: 19em;
+  min-width: 20em;
   overflow: hidden;
   white-space: pre;
-  color: black;
+  color: #444;
   cursor: pointer;
 }
 
+.CodeMirror-hint span {
+  display: none;
+}
+
 li.CodeMirror-hint-active {
-  background: #08f;
-  color: white;
+  background: rgba(0, 100, 255, 0.3);
+}
+
+li.CodeMirror-hint-active span {
+  display: inline-block;
+  margin-left: 3%;
+  color: rgba(0, 80, 255, 0.9);
 }

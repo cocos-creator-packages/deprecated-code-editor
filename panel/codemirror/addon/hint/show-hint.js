@@ -1,3 +1,4 @@
+/* global CodeMirror */
 /* global define */
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
@@ -217,15 +218,23 @@
     var hints = this.hints = document.createElement("ul");
     hints.className = "CodeMirror-hints";
     this.selectedHint = data.selectedHint || 0;
-
+    
     var completions = data.list;
     for (var i = 0; i < completions.length; ++i) {
       var elt = hints.appendChild(document.createElement("li")), cur = completions[i];
       var className = HINT_ELEMENT_CLASS + (i != this.selectedHint ? "" : " " + ACTIVE_HINT_ELEMENT_CLASS);
       if (cur.className != null) className = cur.className + " " + className;
       elt.className = className;
-      if (cur.render) cur.render(elt, data, cur);
-      else elt.appendChild(document.createTextNode(cur.displayText || getText(cur)));
+      if (cur.render) {
+        cur.render(elt, data, cur);
+      } else {
+        elt.appendChild(document.createTextNode(cur.displayText || getText(cur)));
+        if (cur.type) {
+          var typeElt = document.createElement('span');
+          typeElt.appendChild(document.createTextNode(cur.type));
+          elt.appendChild(typeElt);
+        }
+      }
       elt.hintId = i;
     }
 

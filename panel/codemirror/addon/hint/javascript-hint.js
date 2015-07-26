@@ -1,3 +1,5 @@
+/* global define */
+/* global CodeMirror */
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -99,12 +101,12 @@
 
   function getCompletions(token, context, keywords, options, editor) {
     var found = [], start = token.string, global = options && options.globalScope || window;
-    function maybeAdd(str) {
-      var strL = str.toLowerCase();
+    function maybeAdd(obj) {
+      var strL = (obj.text ? obj.text : obj).toLowerCase();
       var startL = start.toLowerCase();
       if (strL.lastIndexOf(startL, 0) == 0 && 
-        !arrayContains(found, str)) {
-        found.push(str);
+        !arrayContains(found, obj)) {
+        found.push(obj);
       }
     }
     function gatherCompletions(obj) {
@@ -117,7 +119,9 @@
       } else if (Array.isArray(obj)) {
         forEach(arrayProps, maybeAdd);
       }
-      for (var name in obj) maybeAdd(name);
+      for (var name in obj) {
+        maybeAdd(name);
+      }
     }
 
     if (context && context.length) {
@@ -148,7 +152,7 @@
             base = base || global[obj.string];
         }
       } else if (obj.type == "property") {
-        if (Object.keys(parent.next).length) {
+        if (parent.next && Object.keys(parent.next).length) {
           base = parent.next;
         } else if (parent.itemtype == "method") {
           base = function () {};
@@ -173,9 +177,7 @@
       //   gatherCompletions(global);
       forEach(keywords, maybeAdd);
       // setup intellisense
-      editor.intellisense.forEach(function (name) {
-        if (found.indexOf(name) === -1) found.push(name);
-      });
+      editor.intellisense.forEach(maybeAdd);
     }
     
     // slice the string if string has a dot
@@ -186,8 +188,9 @@
 
     // filter
     return found.filter(function(item) {
+      var str = typeof item === 'string' ? item : item.text;
       var reg = new RegExp('^' + options.input.replace(/[\(\)]/g, ''), 'i');
-      return (reg.test(item));
+      return (reg.test(str));
     });
   }
 });
