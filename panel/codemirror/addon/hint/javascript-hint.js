@@ -120,7 +120,12 @@
         forEach(arrayProps, maybeAdd);
       }
       for (var name in obj) {
-        maybeAdd(name);
+        var item = obj[name];
+        if (item && item.text) {
+          maybeAdd(item);
+        } else {
+          maybeAdd(name);
+        }
       }
     }
 
