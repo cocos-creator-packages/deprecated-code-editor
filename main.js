@@ -1,3 +1,5 @@
+/* global __dirname */
+/* global Editor */
 
 var win;
 var Util = require('util');

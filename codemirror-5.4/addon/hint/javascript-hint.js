@@ -100,7 +100,12 @@
   function getCompletions(token, context, keywords, options, editor) {
     var found = [], start = token.string, global = options && options.globalScope || window;
     function maybeAdd(str) {
-      if (str.lastIndexOf(start, 0) == 0 && !arrayContains(found, str)) found.push(str);
+      var strL = str.toLowerCase();
+      var startL = start.toLowerCase();
+      if (strL.lastIndexOf(startL, 0) == 0 && 
+        !arrayContains(found, str)) {
+        found.push(str);
+      }
     }
     function gatherCompletions(obj) {
       if (obj === "Boolean") {
@@ -172,13 +177,16 @@
         if (found.indexOf(name) === -1) found.push(name);
       });
     }
+    
+    // slice the string if string has a dot
+    var dotAt = options.input.lastIndexOf('.');
+    if (dotAt !== -1) {
+      options.input = options.input.slice(dotAt + 1);
+    }
 
     // filter
-    options.input = options.input.slice(
-      options.input.lastIndexOf('.')
-    );
     return found.filter(function(item) {
-      var reg = new RegExp('^' + options.input.replace(/[\(\)]/g, ''));
+      var reg = new RegExp('^' + options.input.replace(/[\(\)]/g, ''), 'i');
       return (reg.test(item));
     });
   }
