@@ -23,8 +23,6 @@
   margin: 0;
   padding: 2px 4px;
   border-radius: 1px;
-  min-width: 20em;
-  overflow: hidden;
   white-space: pre;
   color: #444;
   cursor: pointer;
@@ -40,6 +38,14 @@ li.CodeMirror-hint-active {
 
 li.CodeMirror-hint-active span {
   display: inline-block;
-  margin-left: 3%;
+  padding: 0 8px;
+}
+
+li.CodeMirror-hint-active span.hint-type {
   color: rgba(0, 80, 255, 0.9);
+}
+
+li.CodeMirror-hint-active span.hint-desc {
+  color: rgba(0, 0, 0, 0.5);
+  display: block;
 }

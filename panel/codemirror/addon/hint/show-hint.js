@@ -231,8 +231,19 @@
         elt.appendChild(document.createTextNode(cur.displayText || getText(cur)));
         if (cur.type) {
           var typeElt = document.createElement('span');
+          typeElt.className = 'hint-type';
           typeElt.appendChild(document.createTextNode(cur.type));
           elt.appendChild(typeElt);
+        }
+        if (cur.description) {
+          var descElt = document.createElement('span');
+          var text = cur.description.split('\n')[0];
+          if (text.length > 45) {
+            text = text.slice(0, 45) + '...';
+          }
+          descElt.className = 'hint-desc';
+          descElt.appendChild(document.createTextNode(text));
+          elt.appendChild(descElt);
         }
       }
       elt.hintId = i;
