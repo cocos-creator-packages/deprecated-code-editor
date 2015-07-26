@@ -7,7 +7,6 @@ var Intellisense = require('firedoc-intellisense');
 document.addEventListener('DOMContentLoaded', function(event) {
   var url = Editor.argv.url;
   var path = Editor.argv.path;
-  // var text = Fs.readFileSync(path, 'utf8');
   var editor = CodeMirror(document.body, {
     'mode': 'javascript',
     'theme': 'material',
