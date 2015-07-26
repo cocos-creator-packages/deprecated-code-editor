@@ -1,3 +1,5 @@
+/* global CodeMirror */
+/* global Editor */
 var Fs = require('fire-fs');
 var Ipc = require('ipc');
 var Intellisense = require('firedoc-intellisense');
@@ -50,8 +52,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
   });
 
   function onSave (context) {
-    // Fs.writeFile(path, context.getValue(), 'utf8');
-    Editor.sendToCore( 'asset-db:save', url, context.getValue() );
+    Editor.sendToCore('asset-db:save', url, context.getValue());
   }
 
   Ipc.on('code-editor:ast', function (ast) {
