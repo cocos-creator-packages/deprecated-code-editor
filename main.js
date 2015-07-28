@@ -8,7 +8,6 @@ var Firedoc = require('firedoc-api').Firedoc;
 var enginePath = Path.join( __dirname, '../../engine-framework/src' );
 var editorPath = Path.join( __dirname, '../../editor-framework' );
 var runtimePath = Editor.runtimePath;
-
 var doc;
 
 module.exports = {
@@ -17,8 +16,7 @@ module.exports = {
             cwd: enginePath,
             paths: [ 
                 enginePath,
-                editorPath,
-                runtimePath
+                editorPath
             ],
             parseOnly: true
         } );
@@ -32,7 +30,7 @@ module.exports = {
     },
 
     'code-editor:open-by-uuid': function( uuid ) {
-        if (!win || !win.focus) {
+        if ( !win || !win.focus ) {
             win = new Editor.Window( 'code-editor', {
                 'title': 'Fireball - Code Editor',
                 'width': 960,
@@ -68,7 +66,7 @@ module.exports = {
     },
 
     'code-editor:open-by-path': function( path ) {
-        var win = new Editor.Window('code-editor', {
+        var win = new Editor.Window( 'code-editor', {
             'title': 'Fireball - Canvas Studio',
             'width': 1280,
             'height': 720,
@@ -76,12 +74,12 @@ module.exports = {
             'min-height': 100,
             'show': false,
             'resizable': true,
-        });
+        } );
         win.load( 'packages://code-editor/panel/' + ace, {path: path} );
     },
 
     'code-editor:ace-kitchen': function() {
-        var win = new Editor.Window('code-editor', {
+        var win = new Editor.Window( 'code-editor', {
             'title': 'Fireball - Code Editor',
             'width': 960,
             'height': 720,
@@ -89,12 +87,12 @@ module.exports = {
             'min-height': 300,
             'show': true,
             'resizable': true,
-        });
+        } );
         win.load( 'packages://code-editor/ace-1.1.9/kitchen-sink.html' );
     },
 
     'code-editor:cm-kitchen': function() {
-        var win = new Editor.Window('code-editor', {
+        var win = new Editor.Window( 'code-editor', {
             'title': 'Fireball - Code Editor',
             'width': 960,
             'height': 720,
@@ -102,7 +100,7 @@ module.exports = {
             'min-height': 300,
             'show': true,
             'resizable': true,
-        });
+        } );
         win.load( 'packages://code-editor/codemirror-5.4/index.html' );
     },
 };
