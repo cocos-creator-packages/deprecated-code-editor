@@ -16,10 +16,12 @@ module.exports = {
             cwd: enginePath,
             paths: [ 
                 enginePath,
-                editorPath
+                editorPath,
+                Editor.projectPath
             ],
             parseOnly: true
         } );
+        console.log(Editor.appPath);
     },
 
     unload: function () {
