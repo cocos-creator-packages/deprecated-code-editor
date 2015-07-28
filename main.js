@@ -2,11 +2,11 @@
 /* global Editor */
 
 var win;
-var Util = require('util');
-var Path = require('path');
-var Firedoc = require('firedoc-api').Firedoc;
-var enginePath = Path.join( __dirname, '../../engine-framework/src' );
-var editorPath = Path.join( __dirname, '../../editor-framework' );
+var Util = require( 'util' );
+var Path = require( 'path' );
+var Firedoc = require( 'firedoc-api' ).Firedoc;
+var enginePath = Editor.url( 'app://engine-framework/src' );
+var editorPath = Editor.url( 'app://editor-framework' );
 var runtimePath = Editor.runtimePath;
 var doc;
 

@@ -46,6 +46,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
       }
     }
   });
+
   Fs.readFile(path, function (err, buf) {
     editor.setValue(buf.toString('utf8'));
   });
