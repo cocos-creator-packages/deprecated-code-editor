@@ -104,7 +104,7 @@
     },
 
     update: function(first, key) {
-      if (this.tick == null) return;
+      if (this.tick === null) return;
       if (this.data) CodeMirror.signal(this.data, "update");
 
       // define the input character
@@ -117,7 +117,7 @@
     },
 
     updateByThis: function(first) {
-      if (this.tick == null) return;
+      if (this.tick === null) return;
       if (this.data) CodeMirror.signal(this.data, "update");
       // start run hint function in sync or async
       this._update(first);
@@ -137,7 +137,6 @@
 
     finishUpdate: function(data, first) {
       this.data = data;
-
       var picked = (this.widget && this.widget.picked) || (first && this.options.completeSingle);
       if (this.widget) this.widget.close();
       if (data && data.list.length) {
@@ -218,7 +217,7 @@
     var hints = this.hints = document.createElement("ul");
     hints.className = "CodeMirror-hints";
     this.selectedHint = data.selectedHint || 0;
-    
+
     var completions = data.list;
     for (var i = 0; i < completions.length; ++i) {
       var elt = hints.appendChild(document.createElement("li")), cur = completions[i];
@@ -416,7 +415,7 @@
 
   var defaultOptions = {
     hint: CodeMirror.hint.auto,
-    completeSingle: true,
+    completeSingle: false,
     alignWithWord: true,
     closeCharacters: /[\s()\[\]{};:>,]/,
     closeOnUnfocus: true,

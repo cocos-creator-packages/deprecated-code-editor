@@ -14,7 +14,7 @@ module.exports = {
     load: function () {
         doc = new Firedoc( {
             cwd: enginePath,
-            paths: [ 
+            paths: [
                 enginePath,
                 editorPath,
                 Editor.projectPath
