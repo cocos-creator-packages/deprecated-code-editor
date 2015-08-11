@@ -145,7 +145,6 @@
         .join(".");
       var obj = context[context.length - 1], base;
       var parent = editor.intellisense.get(ns);
-      console.log(ns, parent, obj);
 
       if (obj.type == "variable") {
         if (parent) {
