@@ -156,7 +156,7 @@
           if (!options || options.useGlobalScope !== false)
             base = base || global[obj.string];
         }
-      } else if (obj.type == "property") {
+      } else if (obj.type == "property" && parent) {
         if (parent.next && Object.keys(parent.next).length) {
           base = parent.next;
         } else if (parent.itemtype == "method") {
