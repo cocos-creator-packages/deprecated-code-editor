@@ -181,9 +181,11 @@
       //   gatherCompletions(global);
       forEach(keywords, maybeAdd);
       // setup intellisense
-      editor.intellisense.forEach(maybeAdd);
+      if (editor && Array.isArray(editor.intellisense)) {
+        editor.intellisense.forEach(maybeAdd);
+      }
     }
-    
+
     // slice the string if string has a dot
     var dotAt = options.input.lastIndexOf('.');
     if (dotAt !== -1) {
