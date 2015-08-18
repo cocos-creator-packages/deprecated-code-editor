@@ -5,8 +5,8 @@ var win;
 var Util = require( 'util' );
 var Path = require( 'path' );
 var Firedoc = require( 'firedoc-api' ).Firedoc;
-var enginePath = Editor.url( 'app://engine-framework/src' );
-var editorPath = Editor.url( 'app://editor-framework' );
+var enginePath = Editor.url( 'app://utils/api/engine-framework' );
+var editorPath = Editor.url( 'app://utils/api/editor-framework' );
 var runtimePath = Editor.runtimePath;
 var doc;
 
