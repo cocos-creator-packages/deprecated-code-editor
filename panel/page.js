@@ -27,6 +27,12 @@ document.addEventListener('DOMContentLoaded', function(event) {
         onSave(context);
         return;
       }
+      // show the autocomplete only if the cursor is in the end of this line.
+      // this line fixes #4: https://github.com/fireball-packages/code-editor/issues/4
+      var line = editor.getLine(cur.line);
+      if (line.length > cur.ch) return;
+      
+      // if line.length > cursor, start to handle with autocomplete
       switch (tok.type) {
       case 'string':
       case 'comment':
@@ -35,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
       default:
         if (/^(var|function)$/.test(tok.state.lastType)) break;
         if (/'[0-9]{1}'/.test(key) && tok.state.lastType === 'operator') break;
-        if (/'[a-z0-9\.]{1}'/i.test(key)) {
+        if (/'[a-z0-9\.\(]{1}'/i.test(key)) {
           editor.replaceRange(key[1], cur, {
             'line': cur.line,
             'xRel': cur.xRel,
