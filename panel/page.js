@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     'keyMap': 'sublime',
     'lineNumbers': true,
     'fontFamily': 'DejaVu Sans Mono',
+    'cursorHeight': 1.2,
     'autoCloseBrackets': true,
     'matchBrackets': true,
     'autoComplete': true,
