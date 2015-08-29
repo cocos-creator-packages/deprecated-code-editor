@@ -69,7 +69,7 @@
     this.doc = doc;
 
     var input = new CodeMirror.inputStyles[options.inputStyle](this);
-    var display = this.display = new Display(place, doc, input);
+    var display = this.display = new Display(place, doc, input, options);
     display.wrapper.CodeMirror = this;
     updateGutters(this);
     themeChanged(this);
@@ -130,7 +130,7 @@
   // and content drawing. It holds references to DOM nodes and
   // display-related state.
 
-  function Display(place, doc, input) {
+  function Display(place, doc, input, options) {
     var d = this;
     this.input = input;
 
@@ -170,6 +170,7 @@
     d.scroller.setAttribute("tabIndex", "-1");
     // The element in which the editor lives.
     d.wrapper = elt("div", [d.scrollbarFiller, d.gutterFiller, d.scroller], "CodeMirror");
+    d.wrapper.style.lineHeight = options.cursorHeight;
 
     // Work around IE7 z-index bug (not perfect, hence IE7 not really being supported)
     if (ie && ie_version < 8) { d.gutters.style.zIndex = -1; d.scroller.style.paddingRight = 0; }
@@ -2269,7 +2270,7 @@
     var cursor = output.appendChild(elt("div", "\u00a0", "CodeMirror-cursor"));
     cursor.style.left = pos.left + "px";
     cursor.style.top = pos.top + "px";
-    cursor.style.height = Math.max(0, pos.bottom - pos.top) * cm.options.cursorHeight + "px";
+    cursor.style.height = (Math.max(0, pos.bottom - pos.top) * cm.options.cursorHeight - 2) + "px";
 
     if (pos.other) {
       // Secondary cursor, shown when on a 'jump' in bi-directional text
