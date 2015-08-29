@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     'tabSize': 2,
     'keyMap': 'sublime',
     'lineNumbers': true,
+    'fontSize': '14px',
     'fontFamily': 'DejaVu Sans Mono',
     'cursorHeight': 1.2,
     'autoCloseBrackets': true,

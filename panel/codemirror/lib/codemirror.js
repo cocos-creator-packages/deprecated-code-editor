@@ -171,6 +171,14 @@
     // The element in which the editor lives.
     d.wrapper = elt("div", [d.scrollbarFiller, d.gutterFiller, d.scroller], "CodeMirror");
     d.wrapper.style.lineHeight = options.cursorHeight;
+    d.wrapper.style.fontFamily = d.wrapper.style.fontFamily || options.fontFamily;
+    if (!d.wrapper.style.fontSize) {
+      if (typeof options.fontSize === 'number') {
+        d.wrapper.style.fontSize = options.fontSize + 'px';
+      } else {
+        d.wrapper.style.fontSize = options.fontSize;
+      }
+    }
 
     // Work around IE7 z-index bug (not perfect, hence IE7 not really being supported)
     if (ie && ie_version < 8) { d.gutters.style.zIndex = -1; d.scroller.style.paddingRight = 0; }

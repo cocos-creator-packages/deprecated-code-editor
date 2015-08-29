@@ -10,8 +10,6 @@ body {
   padding: 0;
 }
 
-body>.CodeMirror {
+.CodeMirror {
   height: 100%;
-  font-size: 13px;
-  font-family: 'DejaVu Sans Mono';
 }
