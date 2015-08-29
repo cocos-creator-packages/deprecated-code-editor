@@ -1,6 +1,6 @@
 {
   "name": "code-editor",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "Fireball builtin text editor",
   "author": "Firebox Technology",
   "main": "main.js",
