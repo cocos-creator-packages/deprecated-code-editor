@@ -8,8 +8,37 @@
 body {
   margin: 0;
   padding: 0;
+  background-color: #333;
+
+  overflow: hidden;
 }
 
 .CodeMirror {
   height: 100%;
+}
+
+::-webkit-scrollbar {
+  height: 5px;
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  /* border: 3px solid #474747; */
+  background: rgba(255,255,255,0.3);
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.1);
+  background: transparent;
+  /* background: #474747; */
+}
+
+::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-button {
+  display: none;
 }

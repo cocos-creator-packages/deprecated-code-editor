@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
       // this line fixes #4: https://github.com/fireball-packages/code-editor/issues/4
       var line = editor.getLine(cur.line);
       if (line.length > cur.ch) return;
-      
+
       // if line.length > cursor, start to handle with autocomplete
       switch (tok.type) {
       case 'string':
