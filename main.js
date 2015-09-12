@@ -77,32 +77,8 @@ module.exports = {
             'show': false,
             'resizable': true,
         } );
-        win.load( 'packages://code-editor/panel/' + ace, {path: path} );
-    },
-
-    'code-editor:ace-kitchen': function() {
-        var win = new Editor.Window( 'code-editor', {
-            'title': 'Fireball - Code Editor',
-            'width': 960,
-            'height': 720,
-            'min-width': 300,
-            'min-height': 300,
-            'show': true,
-            'resizable': true,
+        win.load( 'packages://code-editor/panel/index.html', {
+            path: path
         } );
-        win.load( 'packages://code-editor/ace-1.1.9/kitchen-sink.html' );
-    },
-
-    'code-editor:cm-kitchen': function() {
-        var win = new Editor.Window( 'code-editor', {
-            'title': 'Fireball - Code Editor',
-            'width': 960,
-            'height': 720,
-            'min-width': 300,
-            'min-height': 300,
-            'show': true,
-            'resizable': true,
-        } );
-        win.load( 'packages://code-editor/codemirror-5.4/index.html' );
     },
 };
