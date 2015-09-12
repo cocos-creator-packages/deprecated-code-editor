@@ -63,6 +63,14 @@ document.addEventListener('DOMContentLoaded', function(event) {
     Editor.sendToCore('asset-db:save', url, context.getValue());
   }
 
+  Ipc.on('panel:open', function (argv) {
+    var url = argv.url;
+    var path = argv.path;
+    Fs.readFile(path, function (err, buf) {
+      editor.setValue(buf.toString('utf8'));
+    });
+  });
+
   Ipc.on('code-editor:ast', function (ast) {
     editor.intellisense = Intellisense(ast);
   });

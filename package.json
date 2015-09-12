@@ -7,5 +7,14 @@
   "dependencies": {
     "firedoc-api": "^1.0.1",
     "firedoc-intellisense": "^1.0.1"
+  },
+  "panels": {
+    "panel": {
+      "frame": "panel/index.html",
+      "type": "simple",
+      "title": "Code Editor",
+      "width": 800,
+      "height": 600
+    }
   }
 }
