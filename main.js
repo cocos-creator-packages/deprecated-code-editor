@@ -62,6 +62,13 @@ module.exports = {
             url: Editor.assetdb.uuidToUrl( uuid ),
             path: Editor.assetdb.uuidToFspath( uuid ),
         });
+
+        var editorWin = Editor.Panel.findWindow('code-editor.panel');
+        editorWin.nativeWin.webContents.on( 'did-finish-load', function() {
+            doc.build( function ( err, ast, opt ) {
+                editorWin.sendToPage( 'code-editor:ast', ast );
+            });
+        });
     },
 
     'code-editor:save': function() {
