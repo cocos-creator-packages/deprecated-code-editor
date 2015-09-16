@@ -58,17 +58,22 @@ module.exports = {
         //     path: Editor.assetdb.uuidToFspath( uuid ),
         // } );
 
+        var editorWin = Editor.Panel.findWindow('code-editor.panel');
+
         Editor.Panel.open('code-editor.panel', {
             url: Editor.assetdb.uuidToUrl( uuid ),
             path: Editor.assetdb.uuidToFspath( uuid ),
         });
 
-        var editorWin = Editor.Panel.findWindow('code-editor.panel');
-        editorWin.nativeWin.webContents.on( 'did-finish-load', function() {
-            doc.build( function ( err, ast, opt ) {
-                editorWin.sendToPage( 'code-editor:ast', ast );
+        // first time open the code editor
+        if ( !editorWin ) {
+            editorWin = Editor.Panel.findWindow('code-editor.panel');
+            editorWin.nativeWin.webContents.on( 'did-finish-load', function() {
+                doc.build( function ( err, ast, opt ) {
+                    editorWin.sendToPage( 'code-editor:ast', ast );
+                });
             });
-        });
+        }
     },
 
     'code-editor:save': function() {
