@@ -4,23 +4,23 @@
 var Util = require( 'util' );
 var Path = require( 'path' );
 var Firedoc = require( 'firedoc' ).Firedoc;
-var enginePath = Editor.url( 'app://utils/api/engine-framework' );
+//var enginePath = Editor.url( 'app://utils/api/engine-framework' );
 var editorPath = Editor.url( 'app://utils/api/editor-framework' );
 var runtimePath = Editor.runtimePath;
 var doc;
 
 module.exports = {
     load: function () {
-        doc = new Firedoc( {
-            cwd: enginePath,
-            paths: [
-                enginePath,
-                editorPath,
-                Editor.projectPath
-            ],
-            parseOnly: true
-        } );
-        console.log(Editor.appPath);
+        //doc = new Firedoc( {
+        //    cwd: enginePath,
+        //    paths: [
+        //        enginePath,
+        //        editorPath,
+        //        Editor.projectPath
+        //    ],
+        //    parseOnly: true
+        //} );
+        //console.log(Editor.App.path);
     },
 
     unload: function () {
@@ -69,9 +69,10 @@ module.exports = {
         if ( !editorWin ) {
             editorWin = Editor.Panel.findWindow('code-editor.panel');
             editorWin.nativeWin.webContents.on( 'did-finish-load', function() {
-                doc.build( function ( err, ast, opt ) {
-                    editorWin.sendToPage( 'code-editor:ast', ast );
-                });
+                Editor.info('TODO - build doc');
+                //doc.build( function ( err, ast, opt ) {
+                //    editorWin.sendToPage( 'code-editor:ast', ast );
+                //});
             });
         }
     },
