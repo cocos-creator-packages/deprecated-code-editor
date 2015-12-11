@@ -3,8 +3,12 @@
 var Fs = require('fire-fs');
 var Ipc = require('ipc');
 var CodeEditor = require('./editor.js');
+var enginePath = Editor.url( 'app://utils/api/engine' );
+var editorPath = Editor.url( 'app://utils/api/editor-framework' );
+var assetdbPath = Editor.url( 'app://utils/api/asset-db');
+var runtimePath = Editor.runtimePath;
 
-require('./firedoc-helper.js').generateBuiltin();
+require('./firedoc-helper.js').generateBuiltin(enginePath, editorPath, assetdbPath);
 
 document.addEventListener('DOMContentLoaded', function(event) {
   var url = Editor.argv.url;

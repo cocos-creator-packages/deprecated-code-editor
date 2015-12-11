@@ -1,20 +1,8 @@
 /* global __dirname */
 /* global Editor */
 
-var Util = require( 'util' );
-var Path = require( 'path' );
-var Firedoc = require( 'firedoc' ).Firedoc;
-var enginePath = Editor.url( 'app://utils/api/engine' );
-var editorPath = Editor.url( 'app://utils/api/editor-framework' );
-var assetdbPath = Editor.url( 'app://utils/api/asset-db');
-var runtimePath = Editor.runtimePath;
-var doc;
-
 module.exports = {
     load: function () {
-        // shoud pass the path in fireball when it exists
-        // require('./panel/firedoc-helper.js').generateBuiltin(enginePath, editorPath, assetdbPath);
-        
     },
 
     unload: function () {

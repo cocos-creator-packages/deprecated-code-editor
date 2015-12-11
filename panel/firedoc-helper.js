@@ -244,14 +244,10 @@ var Definition = function(typeName, description, range, path) {
   this.description = description;
 };
 
-exports.generateBuiltin = function(engineDir, eidtorFrameworkDir, assetDbDir) {
-  var enginePath = engineDir || Path.join(Helper.editorRoot, '../api/engine');
-  var editorFrameworkPath = eidtorFrameworkDir || Path.join(Helper.editorRoot, '../api/editor-framework/lib');
-  var assetdbPath = assetDbDir || Path.join(Helper.editorRoot, '../api/asset-db');
-
+exports.generateBuiltin = function(enginePath, eidtorPath, assetDbPath) {
   var doc = new Firedoc({
     cwd: Helper.editorRoot,
-    paths: [enginePath, editorFrameworkPath, assetdbPath],
+    paths: [enginePath, editorPath, assetDbPath],
     parseOnly: true
   });
 

@@ -12,7 +12,7 @@ describe('<code-editor>', function() {
   beforeEach(function () {
     Editor.Window.load('packages://code-editor/panel/index.html', {
       url: '',
-      path: '',
+      path: '/Users/minggo/SourceCode/test/fireball-test/assets/NewScript.js',
     });
     Editor.Window.resize( 800, 600 );
     Editor.Window.center();

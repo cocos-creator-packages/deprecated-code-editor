@@ -62,9 +62,6 @@ function findFileInDirectory(directory, fileName) {
 // root directory of user project, it will use fireball core level to get the value when integrating with fireball
 exports.rootDir = __dirname;
 
-// root directory of editor
-exports.editorRoot = __dirname;
-
 // find js file with the file name in root directory
 // in fireball, file name is unique through the project
 exports.findFile = function(fileName) {

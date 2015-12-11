@@ -58,13 +58,11 @@ function initEditor(editor) {
 // @path the file path to open
 // @url the url to open
 var CodeEditor = function(path, url) {
-  this.openByFireball = (path != undefined);
-  this.path = path || 'unknown.js';
   this.aceEditor = ace.edit('editor');
   initEditor(this.aceEditor);
 
   // init esprimar
-  esprimaHelper = new EsprimaHelper(this.path);
+  esprimaHelper = new EsprimaHelper(path);
 }
 
 CodeEditor.prototype.constructor = CodeEditor;
