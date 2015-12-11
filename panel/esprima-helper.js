@@ -1,7 +1,8 @@
-var fs = require('fs');
-var path = require('path');
-var helper = require('./helper.js');
-var EsprimaJavaScriptContentAssistProvider = require('./esprima/esprimaJsContentAssist.js').EsprimaJavaScriptContentAssistProvider;
+'use strict';
+
+const Fs = require('fs');
+const Helper = require('./helper.js');
+const EsprimaJavaScriptContentAssistProvider = require('./esprima/esprimaJsContentAssist.js').EsprimaJavaScriptContentAssistProvider;
 
 var instance;
 
@@ -11,12 +12,12 @@ function getOrCreateFileSummary(fileName) {
   var summary = instance.fileSummaries[fileName];
   if (!summary) {
     // generate summary for the file
-    if (!fs.existsSync(fileName)) {
+    if (!Fs.existsSync(fileName)) {
       // console.log(this.fileName + ' require unexists file: ' + fileName);
       return null;
     }
 
-    var fileContent = fs.readFileSync(fileName, 'utf-8');
+    var fileContent = Fs.readFileSync(fileName, 'utf-8');
     summary = instance.saveFileSummary(fileName, fileContent,false);
   }
 
@@ -25,7 +26,7 @@ function getOrCreateFileSummary(fileName) {
 
 function retrieveSummary(fileName) {
   // get the summary of `file_name`, if it is not exists, then generate it if possible
-  fileName = helper.findFile(fileName + '.js');
+  fileName = Helper.findFile(fileName + '.js');
   if (fileName)
     return getOrCreateFileSummary(fileName);
   else

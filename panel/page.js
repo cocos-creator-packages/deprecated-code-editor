@@ -1,7 +1,7 @@
 /* global CodeMirror */
 /* global Editor */
-var fs = require('fire-fs');
-var ipc = require('ipc');
+var Fs = require('fire-fs');
+var Ipc = require('ipc');
 var CodeEditor = require('./editor.js');
 
 require('./firedoc-helper.js').generateBuiltin();
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
   var editor = new CodeEditor(path, url);
 
-  fs.readFile(path, function (err, buf) {
+  Fs.readFile(path, function (err, buf) {
     editor.aceEditor.setValue(buf.toString('utf8'), -1);
   });
 
@@ -20,10 +20,10 @@ document.addEventListener('DOMContentLoaded', function(event) {
     Editor.sendToCore('asset-db:save', url, context.aceEditor.getValue());
   }
 
-  ipc.on('panel:open', function (argv) {
+  Ipc.on('panel:open', function (argv) {
     var url = argv.url;
     var path = argv.path;
-    fs.readFile(path, function (err, buf) {
+    Fs.readFile(path, function (err, buf) {
       editor.aceEditor.setValue(buf.toString('utf8'), -1);
     });
   });
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
   //   editor.intellisense = Intellisense(ast);
   // });
 
-  ipc.on('code-editor:save-from-page', function () {
+  Ipc.on('code-editor:save-from-page', function () {
     onSave(editor);
   });
 

@@ -1,6 +1,8 @@
-var path = require('path');
-var Firedoc = require('firedoc').Firedoc;
-var helper = require('./helper.js');
+'use strict';
+
+const Path = require('path');
+const Firedoc = require('firedoc').Firedoc;
+const Helper = require('./helper.js');
 
 
 var basicTypeMap = {
@@ -243,12 +245,12 @@ var Definition = function(typeName, description, range, path) {
 };
 
 exports.generateBuiltin = function(engineDir, eidtorFrameworkDir, assetDbDir) {
-  var enginePath = engineDir || path.join(helper.editorRoot, '../api/engine');
-  var editorFrameworkPath = eidtorFrameworkDir || path.join(helper.editorRoot, '../api/editor-framework/lib');
-  var assetdbPath = assetDbDir || path.join(helper.editorRoot, '../api/asset-db');
+  var enginePath = engineDir || Path.join(Helper.editorRoot, '../api/engine');
+  var editorFrameworkPath = eidtorFrameworkDir || Path.join(Helper.editorRoot, '../api/editor-framework/lib');
+  var assetdbPath = assetDbDir || Path.join(Helper.editorRoot, '../api/asset-db');
 
   var doc = new Firedoc({
-    cwd: helper.editorRoot,
+    cwd: Helper.editorRoot,
     paths: [enginePath, editorFrameworkPath, assetdbPath],
     parseOnly: true
   });

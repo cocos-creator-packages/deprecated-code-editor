@@ -1,9 +1,8 @@
-var path = require('path');
-var fs = require('fs');
+'use strict';
 
-var langTools = ace.require('ace/ext/language_tools');
-var helper = require('./helper.js');
-var EsprimaHelper = require('./esprima-helper.js');
+const LangTools = ace.require('ace/ext/language_tools');
+const Helper = require('./helper.js');
+const EsprimaHelper = require('./esprima-helper.js');
 
 var esprimaHelper;
 
@@ -20,9 +19,9 @@ var fireballCompleter = {
     // if the pop up window is triggered by `.`, such as foo., then should disable other keyWordCompleters,
     // because we know it wants to access attributes now
     if (prefix === '')
-      helper.disableSystemCompleters(editor);
+      Helper.disableSystemCompleters(editor);
     else
-      helper.enableSystemCompleters(editor);
+      Helper.enableSystemCompleters(editor);
 
     var completions = [];
     var proposals = computeCompletions(editor, session, pos, prefix);
@@ -53,12 +52,12 @@ function initEditor(editor) {
   editor.setTheme('ace/theme/monokai');
   editor.getSession().setMode('ace/mode/javascript');
   editor.$blockScrolling = Infinity;
-  editor.completers = [fireballCompleter, langTools.keyWordCompleter, langTools.snippetCompleter];
+  editor.completers = [fireballCompleter, LangTools.keyWordCompleter, LangTools.snippetCompleter];
 }
 
 // @path the file path to open
 // @url the url to open
-var Editor = function(path, url) {
+var CodeEditor = function(path, url) {
   this.openByFireball = (path != undefined);
   this.path = path || 'unknown.js';
   this.aceEditor = ace.edit('editor');
@@ -68,6 +67,6 @@ var Editor = function(path, url) {
   esprimaHelper = new EsprimaHelper(this.path);
 }
 
-Editor.prototype.constructor = Editor;
+CodeEditor.prototype.constructor = CodeEditor;
 
-module.exports = Editor;
+module.exports = CodeEditor;
