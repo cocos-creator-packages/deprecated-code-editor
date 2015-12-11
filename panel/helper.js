@@ -4,6 +4,8 @@ const Fs = require('fs');
 const Path = require('path');
 const LangTools = ace.require('ace/ext/language_tools');
 
+var projectRoot = Path.join(Editor.projectInfo.path, 'assets');
+
 function disableCompleter(editor, completer) {
   for (var i in editor.completers) {
     var value = editor.completers[i];
@@ -59,13 +61,10 @@ function findFileInDirectory(directory, fileName) {
   return null;
 }
 
-// root directory of user project, it will use fireball core level to get the value when integrating with fireball
-exports.rootDir = __dirname;
-
 // find js file with the file name in root directory
 // in fireball, file name is unique through the project
 exports.findFile = function(fileName) {
-  return findFileInDirectory(exports.rootDir, fileName);
+  return findFileInDirectory(projectRoot, fileName);
 }
 
 // enable keyWordCompleter and snippetCompleter

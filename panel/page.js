@@ -1,4 +1,3 @@
-/* global CodeMirror */
 /* global Editor */
 var Fs = require('fire-fs');
 var Ipc = require('ipc');

@@ -16,6 +16,8 @@ describe('<code-editor>', function() {
     });
     Editor.Window.resize( 800, 600 );
     Editor.Window.center();
+
+    Editor.projectInfo = { path: '/Users/minggo/SourceCode/test/fireball-test' };
   });
 
   it('should be a demo', function( done ) {

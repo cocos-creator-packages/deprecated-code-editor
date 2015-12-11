@@ -18,7 +18,7 @@ function getOrCreateFileSummary(fileName) {
     }
 
     var fileContent = Fs.readFileSync(fileName, 'utf-8');
-    summary = instance.saveFileSummary(fileName, fileContent,false);
+    summary = saveFileSummary(fileName, fileContent,false);
   }
 
   return summary;

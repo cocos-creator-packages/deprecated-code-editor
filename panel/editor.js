@@ -29,7 +29,7 @@ var fireballCompleter = {
       var proposal = proposals[i];
       completions.push({
         value: prefix + proposal.proposal,
-        description: proposal.description,
+        description: proposal.description
       });
     }
 
