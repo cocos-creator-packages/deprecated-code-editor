@@ -13,18 +13,18 @@ document.addEventListener('DOMContentLoaded', function(event) {
   var editor = new CodeEditor(path, url);
 
   fs.readFile(path, function (err, buf) {
-    editor.setValue(buf.toString('utf8'));
+    editor.aceEditor.setValue(buf.toString('utf8'), -1);
   });
 
   function onSave (context) {
-    Editor.sendToCore('asset-db:save', url, context.getValue());
+    Editor.sendToCore('asset-db:save', url, context.aceEditor.getValue());
   }
 
   ipc.on('panel:open', function (argv) {
     var url = argv.url;
     var path = argv.path;
     fs.readFile(path, function (err, buf) {
-      editor.setValue(buf.toString('utf8'));
+      editor.aceEditor.setValue(buf.toString('utf8'), -1);
     });
   });
 

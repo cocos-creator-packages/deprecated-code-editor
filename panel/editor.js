@@ -68,14 +68,6 @@ var Editor = function(path, url) {
   esprimaHelper = new EsprimaHelper(this.path);
 }
 
-Editor.prototype.setValue = function(buf) {
-  this.aceEditor.setValue(buf);
-}
-
-Editor.prototype.getValue = function() {
-  return this.aceEditor.getValue();
-}
-
 Editor.prototype.constructor = Editor;
 
 module.exports = Editor;
