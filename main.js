@@ -12,17 +12,9 @@ var doc;
 
 module.exports = {
     load: function () {
-        doc = new Firedoc( {
-           cwd: enginePath,
-           paths: [
-               enginePath,
-               editorPath,
-               assetdbPath,
-               Editor.projectPath
-           ],
-           parseOnly: true
-        } );
-        console.log(Editor.App.path);
+        // shoud pass the path in fireball when it exists
+        // require('./panel/firedoc-helper.js').generateBuiltin(enginePath, editorPath, assetdbPath);
+        
     },
 
     unload: function () {
@@ -30,36 +22,6 @@ module.exports = {
     },
 
     'code-editor:open-by-uuid': function( uuid ) {
-        // if ( !win || !win.focus ) {
-        //     win = new Editor.Window( 'code-editor', {
-        //         'title': 'Fireball - Code Editor',
-        //         'width': 960,
-        //         'height': 720,
-        //         'min-width': 300,
-        //         'min-height': 300,
-        //         'show': true,
-        //         'resizable': true,
-        //     } );
-        //     Editor.MainMenu.add( 'File/Save', {
-        //         'message': 'code-editor:save'
-        //     } );
-        //     win.nativeWin.on( 'closed', function() {
-        //         Editor.MainMenu.remove('File/Save');
-        //         win = null;
-        //     } );
-        //     win.nativeWin.webContents.on( 'did-finish-load', function() {
-        //         doc.build( function ( err, ast, opt ) {
-        //             win.nativeWin.webContents.send( 'code-editor:ast', ast );
-        //         } );
-        //     } );
-        // } else {
-        //     win.focus();
-        // }
-        // win.load( 'packages://code-editor/panel/index.html', {
-        //     url: Editor.assetdb.uuidToUrl( uuid ),
-        //     path: Editor.assetdb.uuidToFspath( uuid ),
-        // } );
-        return;
 
         var editorWin = Editor.Panel.findWindow('code-editor.panel');
 

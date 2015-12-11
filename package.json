@@ -5,8 +5,10 @@
   "author": "Firebox Technology",
   "main": "main.js",
   "dependencies": {
-    "firedoc-api": "^1.0.1",
-    "firedoc-intellisense": "^1.0.1"
+    "firedoc": "1.12.0",
+    "gulp": "3.9.0",
+    "gulp-sequence": "0.4.1",
+    "ncp": "2.0.0"
   },
   "panels": {
     "panel": {
