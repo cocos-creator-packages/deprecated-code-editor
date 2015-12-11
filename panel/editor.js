@@ -61,6 +61,17 @@ var CodeEditor = function(path, url) {
   this.aceEditor = ace.edit('editor');
   initEditor(this.aceEditor);
 
+  // handle save operation
+  this.aceEditor.commands.addCommand({
+    name: 'save content',
+    bindKey: { win: 'Ctrl-S',
+               mac: 'Command-S' },
+    exec: function(editor) {
+      Editor.sendToCore('asset-db:save', url, editor.getValue());
+    },
+    readOnly: false
+  });
+
   // init esprimar
   esprimaHelper = new EsprimaHelper(path);
 }

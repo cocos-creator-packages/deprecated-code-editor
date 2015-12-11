@@ -19,24 +19,12 @@ document.addEventListener('DOMContentLoaded', function(event) {
     editor.aceEditor.setValue(buf.toString('utf8'), -1);
   });
 
-  function onSave (context) {
-    Editor.sendToCore('asset-db:save', url, context.aceEditor.getValue());
-  }
-
   Ipc.on('panel:open', function (argv) {
     var url = argv.url;
     var path = argv.path;
     Fs.readFile(path, function (err, buf) {
       editor.aceEditor.setValue(buf.toString('utf8'), -1);
     });
-  });
-
-  // ipc.on('code-editor:ast', function (ast) {
-  //   editor.intellisense = Intellisense(ast);
-  // });
-
-  Ipc.on('code-editor:save-from-page', function () {
-    onSave(editor);
   });
 
 });
