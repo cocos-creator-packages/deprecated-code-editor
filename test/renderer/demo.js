@@ -4,17 +4,22 @@ Editor.require('app://editor/test-utils/renderer/init');
 
 // =========================================
 
-
-
 // =========================================
 
 describe('<code-editor>', function() {
-  Helper.runPanel( 'code-editor.panel' );
   this.timeout(0);
+
+  beforeEach(function () {
+    Editor.Window.load('packages://code-editor/panel/index.html', {
+      url: '',
+      path: '',
+    });
+    Editor.Window.resize( 800, 600 );
+    Editor.Window.center();
+  });
 
   it('should be a demo', function( done ) {
     try {
-      let targetEL = Helper.targetEL;
     } catch ( err ) {
       console.error(err);
     }
