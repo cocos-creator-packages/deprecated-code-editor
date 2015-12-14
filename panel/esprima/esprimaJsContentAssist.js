@@ -1765,6 +1765,13 @@ function createEnvironment(options) {
             };
 
             var innerLookup = function(name, type, allTypes) {
+                // minggo: type may be undefined if there is an error in source code
+                // for example, cc.ABC.EFG, ABC is not defined
+                if (!type) {
+                    console.log('can not read property ' + name + ' from ' + type);
+                    return null;
+                }
+
                 var res = type[name];
 
                 var proto = type.$$proto;
@@ -2276,6 +2283,7 @@ EsprimaJavaScriptContentAssistProvider.prototype = {
         }
     },
 
+    // minggo: add our own computeProposals()
     computeCompletions: function(buffer, offset, prefix) {
         try {
             var root = mVisitor.parse(buffer);
@@ -2302,7 +2310,10 @@ EsprimaJavaScriptContentAssistProvider.prototype = {
                 return [];
             }
         } catch (e) {
-            throw (e);
+            // minggo: just output error message instead of throw exception to make it more strongable
+            // throw (e);
+            console.log(e.message);
+            return [];
         }
     },
 
