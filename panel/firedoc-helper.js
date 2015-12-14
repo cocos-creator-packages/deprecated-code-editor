@@ -18,12 +18,27 @@ var basicTypeMap = {
   Object  : 'Object'
 };
 
+var basicTypeWithoutConflictMap = {
+  number  : 'Number',
+  Number  : 'Number',
+  string  : 'String',
+  String  : 'String',
+  array   : 'Array',
+  Array   : 'Array',
+  boolean : 'Boolean',
+  Boolean : 'Boolean'
+};
 
-function transforType(module, type) {
+function transforType(module, type, ignoreConflict) {
+
+   var basicType = ignoreConflict ? basicTypeMap : basicTypeWithoutConflictMap;
 
   // don't transfor basic types
-  if (basicTypeMap[type])
-    return basicTypeMap[type];
+  if (basicType[type])
+    return basicType[type];
+
+  if (type === 'cc.Object')
+    return 'ccObject';
 
   // add 'cc' prefix for engine module
   if (module === 'cc') 
@@ -33,6 +48,7 @@ function transforType(module, type) {
   // TODO: some special operation for editor framework?
   return type;
 }
+
 
 // retrive necessary information from AST.members
 // property = {
@@ -54,7 +70,7 @@ function generateMember(property) {
     var retType = property.return;
     if (retType)
       // FIXME: should change it when the framework comment use full type
-      description = description.concat(transforType(property.module, retType));
+      description = description.concat(transforType(property.module, retType, true));
     else
       description = description.concat('undefined');
 
@@ -73,7 +89,7 @@ function generateMember(property) {
   } 
   else {
     // it is a normal property, we just need its type information
-    description = transforType(property.module, property.type);
+    description = transforType(property.module, property.type, true);
   }
 
   var ret = {};
@@ -92,7 +108,7 @@ function generateClass(clazz) {
     var extend = clazz.extends;
     if (typeof(extend) === 'string') 
       // FIXME: should change it when the framework comment use full type
-      superName = transforType(clazz.module, extend);
+      superName = transforType(clazz.module, extend, false);
     else
       superName = 'Object';
 
@@ -111,7 +127,7 @@ function generateClass(clazz) {
     }
 
     // it is used to create class declaration
-    var name = transforType(clazz.module, clazz.name)
+    var name = transforType(clazz.module, clazz.name, false)
     ret.classMeta = {};
     ret.classMeta[name] = {
       $$isBuiltin: true,
@@ -227,7 +243,7 @@ function generateModules(ast) {
         continue;
       }
       var classInfo = modulesInfo[moduleName].classes[className];
-      var transformedClassName = transforType(moduleName, className);
+      var transformedClassName = transforType(moduleName, className, false);
       mergeObject(classInfo[transformedClassName], memberInfo);
     }
   }
@@ -247,7 +263,7 @@ var Definition = function(typeName, description, range, path) {
 exports.generateBuiltin = function(enginePath, eidtorPath, assetDbPath) {
   var doc = new Firedoc({
     cwd: Helper.editorRoot,
-    paths: [enginePath, editorPath, assetDbPath],
+    paths: [enginePath],
     parseOnly: true
   });
 
