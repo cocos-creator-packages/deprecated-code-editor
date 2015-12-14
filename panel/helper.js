@@ -71,10 +71,12 @@ exports.findFile = function(fileName) {
 exports.enableSystemCompleters = function(editor) {
   enableCompleter(editor, LangTools.keyWordCompleter);
   enableCompleter(editor, LangTools.snippetCompleter);
+  enableCompleter(editor, LangTools.textCompleter);
 }
 
 // disable keyWordCompleter and sinppetCompleter
 exports.disableSystemCompleters = function(editor) {
   disableCompleter(editor, LangTools.keyWordCompleter);
   disableCompleter(editor, LangTools.snippetCompleter);
+  disableCompleter(editor, LangTools.textCompleter);
 }

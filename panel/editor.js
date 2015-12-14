@@ -52,7 +52,7 @@ function initEditor(editor) {
   editor.setTheme('ace/theme/monokai');
   editor.getSession().setMode('ace/mode/javascript');
   editor.$blockScrolling = Infinity;
-  editor.completers = [fireballCompleter, LangTools.keyWordCompleter, LangTools.snippetCompleter];
+  editor.completers = [fireballCompleter, LangTools.keyWordCompleter, LangTools.snippetCompleter, LangTools.textCompleter];
 }
 
 // @path the file path to open
