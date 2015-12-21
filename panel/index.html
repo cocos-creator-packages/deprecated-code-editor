@@ -1,26 +1,24 @@
 <html lang="en">
-<head>
-<title>Code editor</title>
-<style type="text/css" media="screen">
-    #editor { 
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-    }
-</style>
-</head>
-<body>
+  <head>
+    <style type="text/css" media="screen">
+      #editor {
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="editor"></div>
 
-<div id="editor">
-</div>
-<script src="app://editor/page/page-init.js"></script>
-<script>
-    Editor.Metrics.trackOpenCodeEditor();
-</script>
-<script src="ace/ace.js" type="text/javascript" charset="utf-8"></script>
-<script src="ace/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
-<script src="page.js" type="text/javascript" charset="utf-8"></script>
-</body>
+    <script src="app://editor/page/page-init.js"></script>
+    <script>
+      Editor.Metrics.trackOpenCodeEditor();
+    </script>
+    <script src="ace/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="ace/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
+    <script src="page.js" type="text/javascript" charset="utf-8"></script>
+  </body>
 </html>
