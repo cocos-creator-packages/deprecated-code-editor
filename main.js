@@ -1,26 +1,26 @@
-/* global __dirname */
-/* global Editor */
+'use strict';
 
 module.exports = {
-    load: function () {
-    },
+  load () {
+  },
 
-    unload: function () {
-        Editor.Panel.close('code-editor.panel');
-    },
+  unload () {
+    Editor.Panel.close('code-editor.panel');
+  },
 
-    'code-editor:open-by-uuid': function( uuid ) {
+  'code-editor:open-by-uuid' ( uuid ) {
+    let url = Editor.assetdb.uuidToUrl( uuid );
+    let path = Editor.assetdb.uuidToFspath( uuid );
 
-        var editorWin = Editor.Panel.findWindow('code-editor.panel');
+    Editor.Panel.open('code-editor.panel', {
+      url: url,
+      path: path
+    });
 
-        Editor.Panel.open('code-editor.panel', {
-            url: Editor.assetdb.uuidToUrl( uuid ),
-            path: Editor.assetdb.uuidToFspath( uuid ),
-        });
-
-        // first time open the code editor
-        if ( !editorWin ) {
-            editorWin = Editor.Panel.findWindow('code-editor.panel');
-        }
-    },
+    // first time open the code editor
+    let editorWin = Editor.Panel.findWindow('code-editor.panel');
+    editorWin.nativeWin.setTitle(
+      `Code Editor - ${url}`
+    );
+  },
 };
