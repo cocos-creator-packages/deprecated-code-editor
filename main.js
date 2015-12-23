@@ -1,5 +1,17 @@
 'use strict';
 
+function _updateTitile ( url, dirty ) {
+    if ( !url ) {
+        url = 'Untitled';
+    }
+
+    let dirtyMark = dirty ? '*' : '';
+    let editorWin = Editor.Panel.findWindow('code-editor.panel');
+    editorWin.nativeWin.setTitle(
+      `Code Editor - ${url}${dirtyMark}`
+    );
+}
+
 module.exports = {
   load () {
   },
@@ -17,10 +29,10 @@ module.exports = {
       path: path
     });
 
-    // first time open the code editor
-    let editorWin = Editor.Panel.findWindow('code-editor.panel');
-    editorWin.nativeWin.setTitle(
-      `Code Editor - ${url}`
-    );
+    _updateTitile( url, false );
+  },
+
+  'code-editor:update-title' ( url, dirty ) {
+    _updateTitile(url, dirty);
   },
 };
