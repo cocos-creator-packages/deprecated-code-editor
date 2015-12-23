@@ -48,8 +48,6 @@ function initEditor(editor) {
   editor.setOptions({
     enableLiveAutocompletion: true,
     enableSnippets: true,
-    fontFamily: 'DejaVu Sans Mono',
-    fontSize: '14px',
   });
   editor.setTheme('ace/theme/tomorrow_night_eighties');
   // editor.setTheme('ace/theme/monokai');
