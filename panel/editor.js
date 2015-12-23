@@ -1,7 +1,7 @@
 'use strict';
 
-const LangTools = ace.require('ace/ext/language_tools');
-const Helper = require('./helper.js');
+const LangTools = window.ace.require('ace/ext/language_tools');
+const CodeHelper = require('./helper.js');
 const EsprimaHelper = require('./esprima-helper.js');
 
 var esprimaHelper;
@@ -19,9 +19,9 @@ var fireballCompleter = {
     // if the pop up window is triggered by `.`, such as foo., then should disable other keyWordCompleters,
     // because we know it wants to access attributes now
     if (prefix === '')
-      Helper.disableSystemCompleters(editor);
+      CodeHelper.disableSystemCompleters(editor);
     else
-      Helper.enableSystemCompleters(editor);
+      CodeHelper.enableSystemCompleters(editor);
 
     var completions = [];
     var proposals = computeCompletions(editor, session, pos, prefix);
@@ -48,8 +48,11 @@ function initEditor(editor) {
   editor.setOptions({
     enableLiveAutocompletion: true,
     enableSnippets: true,
+    fontFamily: 'DejaVu Sans Mono',
+    fontSize: '14px',
   });
-  editor.setTheme('ace/theme/monokai');
+  editor.setTheme('ace/theme/tomorrow_night_eighties');
+  // editor.setTheme('ace/theme/monokai');
   editor.getSession().setMode('ace/mode/javascript');
   editor.$blockScrolling = Infinity;
   editor.completers = [fireballCompleter, LangTools.keyWordCompleter, LangTools.snippetCompleter, LangTools.textCompleter];
@@ -57,25 +60,50 @@ function initEditor(editor) {
 
 // @path the file path to open
 // @url the url to open
-var CodeEditor = function(path, url) {
-  this.aceEditor = ace.edit('editor');
-  initEditor(this.aceEditor);
+class CodeEditor {
+  constructor ( path, url ) {
+    this._url = url;
+    this._path = path;
 
-  // handle save operation
-  this.aceEditor.commands.addCommand({
-    name: 'save content',
-    bindKey: { win: 'Ctrl-S',
-               mac: 'Command-S' },
-    exec: function(editor) {
-      Editor.sendToCore('asset-db:save', url, editor.getValue());
-    },
-    readOnly: false
-  });
+    this.aceEditor = window.ace.edit('editor');
+    initEditor(this.aceEditor);
 
-  // init esprimar
-  esprimaHelper = new EsprimaHelper(path);
+    // handle save operation
+    this.aceEditor.commands.addCommand({
+      name: 'save content',
+      readOnly: false,
+      bindKey: {
+        win: 'Ctrl-S',
+        mac: 'Command-S'
+      },
+
+      exec (editor) {
+        Editor.sendToCore('asset-db:save', url, editor.getValue());
+
+        // TODO: we should use asset-db:asset-changed instead
+        editor.getSession().getUndoManager().markClean();
+        Editor.sendToCore('code-editor:update-title', url, false);
+      },
+    });
+
+    this.aceEditor.getSession().on('change', () => {
+      setTimeout(() => {
+        var dirty = !this.aceEditor.getSession().getUndoManager().isClean();
+        Editor.sendToCore('code-editor:update-title', url, dirty);
+      },1);
+    });
+
+    // init esprimar
+    esprimaHelper = new EsprimaHelper(path);
+  }
+
+  save () {
+    Editor.sendToCore('asset-db:save', this._url, this.aceEditor.getValue());
+
+    // TODO: we should use asset-db:asset-changed instead
+    this.aceEditor.getSession().getUndoManager().markClean();
+    Editor.sendToCore('code-editor:update-title', this._url, false);
+  }
 }
-
-CodeEditor.prototype.constructor = CodeEditor;
 
 module.exports = CodeEditor;
