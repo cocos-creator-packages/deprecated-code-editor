@@ -2,15 +2,37 @@
   <head>
     <style type="text/css" media="screen">
       #editor {
-          position: absolute;
-          top: 0;
-          right: 0;
-          bottom: 0;
-          left: 0;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
 
-          font-size: 14px;
-          font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
-          line-height: 18px;
+        font-size: 14px;
+        font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+        line-height: 18px;
+      }
+
+      ::-webkit-scrollbar {
+        height: 10px;
+        width: 10px;
+      }
+      ::-webkit-scrollbar-thumb {
+        border-radius: 5px;
+        border: 3px solid transparent;
+        background: rgba(255,255,255,0.3);
+        background-clip: content-box;
+      }
+      ::-webkit-scrollbar-track {
+        /* background: rgba(255,255,255,0.1); */
+        background: transparent;
+        /* background: #474747; */
+      }
+      ::-webkit-scrollbar-corner {
+        background-color: transparent;
+      }
+      ::-webkit-scrollbar-button {
+        display: none;
       }
     </style>
   </head>
@@ -24,5 +46,41 @@
     <script src="ace/ace.js" type="text/javascript" charset="utf-8"></script>
     <script src="ace/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
     <script src="page.js" type="text/javascript" charset="utf-8"></script>
+    <style>
+      .ace_editor.ace_autocomplete {
+        background: #333;
+        color: #aaa;
+        border: 1px solid #888;
+      }
+
+      .ace_editor.ace_autocomplete .ace_completion-highlight {
+        color: #f90;
+      }
+
+      .ace_editor.ace_autocomplete .ace_rightAlignedText {
+        color: #6597c9;
+      }
+
+      .ace_editor.ace_autocomplete .ace_marker-layer .ace_active-line {
+        background: #6d2c2c;
+      }
+
+      .ace_editor.ace_autocomplete .ace_marker-layer .ace_line-hover {
+        border: 1px solid transparent;
+        background: rgba(255,255,255,0.3);
+      }
+
+      .ace_tooltip {
+        font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+        font-size: 12px;
+
+        background-color: #2376e4;
+        color: #ffffff;
+        border: 0px;
+        border-radius: 5px;
+        max-width: 400px;
+        white-space: normal
+      }
+    </style>
   </body>
 </html>
