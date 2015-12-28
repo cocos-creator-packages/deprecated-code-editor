@@ -4,15 +4,15 @@ const LangTools = window.ace.require('ace/ext/language_tools');
 const CodeHelper = require('./helper.js');
 const EsprimaHelper = require('./esprima-helper.js');
 
-var esprimaHelper;
+let esprimaHelper;
 
-var fireballCompleter = {
-  getCompletions: function(editor, session, pos, prefix, callback) {
+let fireballCompleter = {
+  getCompletions (editor, session, pos, prefix, callback) {
 
     // use esprima to parse the file and return completions
     function computeCompletions(editor, session, pos, prefix) {
-      var offset = session.getDocument().positionToIndex(pos);
-      var proposals = esprimaHelper.computeCompletions(session.getValue(), offset, prefix);
+      let offset = session.getDocument().positionToIndex(pos);
+      let proposals = esprimaHelper.computeCompletions(session.getValue(), offset, prefix);
       return proposals;
     }
 
@@ -23,10 +23,10 @@ var fireballCompleter = {
     else
       CodeHelper.enableSystemCompleters(editor);
 
-    var completions = [];
-    var proposals = computeCompletions(editor, session, pos, prefix);
-    for (var i in proposals) {
-      var proposal = proposals[i];
+    let completions = [];
+    let proposals = computeCompletions(editor, session, pos, prefix);
+    for (let i in proposals) {
+      let proposal = proposals[i];
       completions.push({
         value: prefix + proposal.proposal,
         description: proposal.description
@@ -36,7 +36,7 @@ var fireballCompleter = {
     callback(null, completions);
   },
 
-  getDocTooltip: function(selected) {
+  getDocTooltip (selected) {
     return selected.description;
   },
 
@@ -59,12 +59,18 @@ function initEditor(editor) {
 // @path the file path to open
 // @url the url to open
 class CodeEditor {
-  constructor ( path, url ) {
+  constructor ( path, url, uuid ) {
     this._url = url;
     this._path = path;
+    this._uuid = uuid;
 
     this.aceEditor = window.ace.edit('editor');
     initEditor(this.aceEditor);
+
+    // init esprimar
+    esprimaHelper = new EsprimaHelper(path);
+
+    let self = this;
 
     // handle save operation
     this.aceEditor.commands.addCommand({
@@ -75,28 +81,22 @@ class CodeEditor {
         mac: 'Command-S'
       },
 
-      exec (editor) {
-        Editor.sendToCore('asset-db:save', url, editor.getValue());
-
-        // TODO: we should use asset-db:asset-changed instead
-        editor.getSession().getUndoManager().markClean();
-        Editor.sendToCore('code-editor:update-title', url, false);
+      exec () {
+        self.save();
       },
     });
 
     this.aceEditor.getSession().on('change', () => {
       setTimeout(() => {
         var dirty = !this.aceEditor.getSession().getUndoManager().isClean();
-        Editor.sendToCore('code-editor:update-title', url, dirty);
+        Editor.sendToCore('code-editor:update-title', self._url, dirty);
       },1);
     });
-
-    // init esprimar
-    esprimaHelper = new EsprimaHelper(path);
   }
 
   save () {
-    Editor.sendToCore('asset-db:save', this._url, this.aceEditor.getValue());
+    let text = this.aceEditor.getValue();
+    Editor.sendToCore('asset-db:save', this._url, text);
 
     // TODO: we should use asset-db:asset-changed instead
     this.aceEditor.getSession().getUndoManager().markClean();

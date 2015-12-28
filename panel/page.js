@@ -7,20 +7,18 @@
   const Ipc = require('ipc');
   const CodeEditor = require('./editor.js');
 
-  const enginePath = Editor.url( 'app://utils/api/engine' );
-  const editorPath = Editor.url( 'app://utils/api/editor-framework' );
-  const assetdbPath = Editor.url( 'app://utils/api/asset-db');
+  const enginePath = Editor.url('app://utils/api/engine');
+  const editorPath = Editor.url('app://utils/api/editor-framework');
+  const assetdbPath = Editor.url('app://utils/api/asset-db');
 
   require('./firedoc-helper.js').generateBuiltin(enginePath, editorPath, assetdbPath);
 
   let codeEditor = null;
-  let editUrl = '';
-  let editPath = '';
 
   function _confirmClose () {
     var dirty = !codeEditor.aceEditor.getSession().getUndoManager().isClean();
     if ( dirty ) {
-      let name = Path.basename(editPath);
+      let name = Path.basename(codeEditor._path);
 
       return Editor.Dialog.messageBox({
         type: 'warning',
@@ -35,26 +33,89 @@
     return 2;
   }
 
-  Ipc.on('panel:run', argv => {
-    editUrl = argv.url;
-    editPath = argv.path;
+  function _confirmReload () {
+    var dirty = !codeEditor.aceEditor.getSession().getUndoManager().isClean();
+    if ( dirty ) {
+      let name = Path.basename(codeEditor._path);
 
-    Fs.readFile(editPath, (err, buf) => {
+      return Editor.Dialog.messageBox({
+        type: 'warning',
+        buttons: ['Load','Cancel'],
+        title: 'Script changed outside',
+        message: `${name} has changed in other place, do you want to load the changes?`,
+        detail: 'Your changes will be lost if you load it.'
+      });
+    }
+
+    // nothing changed, load it anyway
+    return 0;
+  }
+
+  function _openFile ( argv, row, column ) {
+    codeEditor._url = argv.url;
+    codeEditor._path = argv.path;
+    codeEditor._uuid = argv.uuid;
+
+    Fs.readFile(argv.path, (err, buf) => {
       // NOTE: https://github.com/ajaxorg/ace/issues/1243
       codeEditor.aceEditor.getSession().setValue(buf.toString('utf8'), -1);
+
+      if ( row !== undefined && column !== undefined ) {
+        codeEditor.aceEditor.moveCursorTo( row, column );
+      }
     });
+  }
+
+  Ipc.on('panel:run', argv => {
+    let res = _confirmClose();
+    switch ( res ) {
+      // save
+      case 0:
+      codeEditor.save();
+      _openFile(argv);
+      return;
+
+      // cancel
+      case 1:
+      return;
+
+      // don't save
+      case 2:
+      _openFile(argv);
+      return;
+    }
+  });
+
+  Ipc.on('asset-db:asset-changed', function ( result ) {
+    if ( codeEditor._uuid !== result.uuid ) {
+      return;
+    }
+
+    let cursor = codeEditor.aceEditor.getCursorPosition();
+    let res = _confirmReload();
+    switch (res) {
+      // reload
+      case 0:
+      _openFile({
+        url: codeEditor._url,
+        path: codeEditor._path,
+        uuid: codeEditor._uuid,
+      }, cursor.row, cursor.column);
+      return;
+
+      // cancel
+      case 1:
+      return;
+    }
   });
 
   document.addEventListener('DOMContentLoaded', () => {
-    editUrl = Editor.argv.url;
-    editPath = Editor.argv.path;
-
-    codeEditor = new CodeEditor(editPath, editUrl);
-
-    Fs.readFile(editPath, (err, buf) => {
-      // NOTE: https://github.com/ajaxorg/ace/issues/1243
-      codeEditor.aceEditor.getSession().setValue(buf.toString('utf8'), -1);
-    });
+    codeEditor = new CodeEditor(
+      Editor.argv.path,
+      Editor.argv.url,
+      Editor.argv.uuid
+    );
+    _openFile(Editor.argv);
   });
 
   // beforeunload event
