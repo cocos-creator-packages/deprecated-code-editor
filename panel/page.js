@@ -24,10 +24,10 @@
 
       return Editor.Dialog.messageBox({
         type: 'warning',
-        buttons: ['Save','Cancel','Don\'t Save'],
-        title: 'Save Script Confirm',
-        message: `${name} has changed, do you want to save it?`,
-        detail: 'Your changes will be lost if you close this item without saving.'
+        buttons: [Editor.T('MESSAGE.save'), Editor.T('MESSAGE.cancel'), Editor.T('MESSAGE.dont_save')],
+        title: Editor.T('MESSAGE.code_editor.save_confirm_title'),
+        message: Editor.T('MESSAGE.code_editor.save_confirm_message', {name: name}),
+        detail: Editor.T('MESSAGE.code_editor.save_confirm_detail')
       });
     }
 
