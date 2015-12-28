@@ -109,6 +109,21 @@
     }
   });
 
+  Ipc.on('asset-db:assets-moved', function ( results ) {
+    results.forEach(result => {
+      if ( codeEditor._uuid !== result.uuid ) {
+        return;
+      }
+
+      codeEditor._uuid = result.uuid;
+      codeEditor._url = result.url;
+      codeEditor._path = result.destPath;
+
+      let dirty = !codeEditor.aceEditor.getSession().getUndoManager().isClean();
+      Editor.sendToCore('code-editor:update-title', codeEditor._url, dirty);
+    });
+  });
+
   document.addEventListener('DOMContentLoaded', () => {
     codeEditor = new CodeEditor(
       Editor.argv.path,
