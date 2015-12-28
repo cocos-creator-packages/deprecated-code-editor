@@ -26,7 +26,8 @@ module.exports = {
 
     Editor.Panel.open('code-editor.panel', {
       url: url,
-      path: path
+      path: path,
+      uuid: uuid
     });
 
     _updateTitile( url, false );
