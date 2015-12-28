@@ -52,13 +52,20 @@
   }
 
   function _openFile ( argv, row, column ) {
-    codeEditor._url = argv.url;
-    codeEditor._path = argv.path;
-    codeEditor._uuid = argv.uuid;
-
     Fs.readFile(argv.path, (err, buf) => {
+      // don't do anything if the text is the same.
+      // this will make sure we don't break the undo stack
+      let text = buf.toString('utf8');
+      if ( text === codeEditor.aceEditor.getValue() ) {
+        return;
+      }
+
+      codeEditor._url = argv.url;
+      codeEditor._path = argv.path;
+      codeEditor._uuid = argv.uuid;
+
       // NOTE: https://github.com/ajaxorg/ace/issues/1243
-      codeEditor.aceEditor.getSession().setValue(buf.toString('utf8'), -1);
+      codeEditor.aceEditor.getSession().setValue(text, -1);
 
       if ( row !== undefined && column !== undefined ) {
         codeEditor.aceEditor.moveCursorTo( row, column );
