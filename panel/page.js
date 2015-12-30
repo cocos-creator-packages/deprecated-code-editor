@@ -51,6 +51,23 @@
     return 0;
   }
 
+  let _extname2mode = {
+    '.js': 'javascript',
+    '.coffee': 'coffee',
+    '.md': 'markdown',
+    '.markdown': 'markdown',
+    '.txt': 'text',
+    '.html': 'html',
+    '.xml': 'xml',
+    '.css': 'css',
+    '.less': 'less',
+    '.scss': 'scss',
+    '.stylus': 'stylus',
+    '.json': 'json',
+    '.yaml': 'yaml',
+    '.ini': 'ini',
+  };
+
   function _openFile ( argv, row, column ) {
     Fs.readFile(argv.path, (err, buf) => {
       // don't do anything if the text is the same.
@@ -64,8 +81,12 @@
       codeEditor._path = argv.path;
       codeEditor._uuid = argv.uuid;
 
+      let editorSession = codeEditor.aceEditor.getSession();
+      let extname = Path.extname(argv.path);
+      editorSession.setMode(`ace/mode/${_extname2mode[extname]}`);
+
       // NOTE: https://github.com/ajaxorg/ace/issues/1243
-      codeEditor.aceEditor.getSession().setValue(text, -1);
+      editorSession.setValue(text, -1);
 
       if ( row !== undefined && column !== undefined ) {
         codeEditor.aceEditor.moveCursorTo( row, column );
