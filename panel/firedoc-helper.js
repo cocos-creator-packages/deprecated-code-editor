@@ -263,7 +263,7 @@ var Definition = function(typeName, description, range, path) {
 exports.generateBuiltin = function(enginePath, eidtorPath, assetDbPath) {
   var doc = new Firedoc({
     cwd: Helper.editorRoot,
-    paths: [enginePath],
+    paths: [enginePath, eidtorPath, assetDbPath],
     parseOnly: true
   });
 
