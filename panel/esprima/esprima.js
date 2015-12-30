@@ -2197,7 +2197,7 @@ function parseVariableDeclaration(kind) {
         throwErrorTolerant({}, Messages.StrictVarName);
     }
 
-    if (kind === 'const') {
+    if (kind === 'const' || kind === 'let') {
         expect('=');
         init = parseAssignmentExpression();
     } else if (match('=')) {
