@@ -1,5 +1,6 @@
 'use strict';
 
+const Path = require('path');
 const LangTools = window.ace.require('ace/ext/language_tools');
 const CodeHelper = require('./helper.js');
 const EsprimaHelper = require('./esprima-helper.js');
@@ -45,15 +46,20 @@ let fireballCompleter = {
 };
 
 function initEditor(editor) {
-  editor.setOptions({
+  var ace = editor.aceEditor;
+  ace.setOptions({
     enableLiveAutocompletion: true,
     enableSnippets: true,
   });
-  editor.setTheme('ace/theme/tomorrow_night_eighties');
-  // editor.setTheme('ace/theme/monokai');
-  editor.getSession().setMode('ace/mode/javascript');
-  editor.$blockScrolling = Infinity;
-  editor.completers = [fireballCompleter, LangTools.keyWordCompleter, LangTools.snippetCompleter, LangTools.textCompleter];
+  ace.setTheme('ace/theme/tomorrow_night_eighties');
+  ace.$blockScrolling = Infinity;
+  // only add ourown completer only when it is a javascript file
+  if (editor._isJSFile) {
+    ace.completers = [fireballCompleter, LangTools.keyWordCompleter, LangTools.snippetCompleter, LangTools.textCompleter];
+    ace.getSession().setMode('ace/mode/javascript');
+  }
+  else 
+    ace.getSession().setMode('ace/mode/coffee');
 }
 
 // @path the file path to open
@@ -63,9 +69,10 @@ class CodeEditor {
     this._url = url;
     this._path = path;
     this._uuid = uuid;
+    this._isJSFile = Path.extname(path) === '.js';
 
     this.aceEditor = window.ace.edit('editor');
-    initEditor(this.aceEditor);
+    initEditor(this);
 
     // init esprimar
     esprimaHelper = new EsprimaHelper(path);
