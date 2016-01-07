@@ -874,7 +874,10 @@
         }
 
         if (index === token.start) {
-            throwUnexpectedToken();
+            // minggo: throw exception may cause dead loop, for example
+            // test: 'abc'，: it uses chinese comma
+            // throwUnexpectedToken();
+            ++index;
         }
 
         token.end = index;
