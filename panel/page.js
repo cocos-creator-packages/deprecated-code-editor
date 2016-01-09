@@ -1,10 +1,12 @@
 (() => {
   'use strict';
 
+  const Electron = require('electron');
+  const ipcRenderer = Electron.ipcRenderer;
+
   /* global Editor */
   const Fs = require('fire-fs');
   const Path = require('fire-path');
-  const Ipc = require('ipc');
   const CodeEditor = require('./editor.js');
 
   const enginePath = Editor.url('app://utils/api/engine');
@@ -94,7 +96,7 @@
     });
   }
 
-  Ipc.on('panel:run', argv => {
+  ipcRenderer.on('panel:run', (event, argv) => {
     let res = _confirmClose();
     switch ( res ) {
       // save
@@ -114,7 +116,7 @@
     }
   });
 
-  Ipc.on('asset-db:asset-changed', function ( result ) {
+  ipcRenderer.on('asset-db:asset-changed', function ( event, result ) {
     if ( codeEditor._uuid !== result.uuid ) {
       return;
     }
@@ -137,7 +139,7 @@
     }
   });
 
-  Ipc.on('asset-db:assets-moved', function ( results ) {
+  ipcRenderer.on('asset-db:assets-moved', function ( event, results ) {
     results.forEach(result => {
       if ( codeEditor._uuid !== result.uuid ) {
         return;

@@ -1,6 +1,6 @@
 'use strict';
 
-const Fs = require('fs');
+const Fs = require('fire-fs');
 const Helper = require('./helper.js');
 const EsprimaJavaScriptContentAssistProvider = require('./esprima/esprimaJsContentAssist.js').EsprimaJavaScriptContentAssistProvider;
 
