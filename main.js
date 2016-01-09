@@ -20,7 +20,7 @@ module.exports = {
     Editor.Panel.close('code-editor.panel');
   },
 
-  'code-editor:open-by-uuid' ( uuid ) {
+  'code-editor:open-by-uuid' ( event, uuid ) {
     let url = Editor.assetdb.uuidToUrl( uuid );
     let path = Editor.assetdb.uuidToFspath( uuid );
 
@@ -33,7 +33,7 @@ module.exports = {
     _updateTitile( url, false );
   },
 
-  'code-editor:update-title' ( url, dirty ) {
+  'code-editor:update-title' ( event, url, dirty ) {
     _updateTitile(url, dirty);
   },
 };
