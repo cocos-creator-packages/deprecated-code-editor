@@ -70,7 +70,7 @@ function generateMember(property) {
     var retType = property.return;
     if (retType)
       // FIXME: should change it when the framework comment use full type
-      description = description.concat(transforType(property.module, retType, true));
+      description = description.concat(transforType(property.module, retType.type, true));
     else
       description = description.concat('undefined');
 
