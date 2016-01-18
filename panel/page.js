@@ -27,7 +27,10 @@
         buttons: [Editor.T('MESSAGE.save'), Editor.T('MESSAGE.cancel'), Editor.T('MESSAGE.dont_save')],
         title: Editor.T('MESSAGE.code_editor.save_confirm_title'),
         message: Editor.T('MESSAGE.code_editor.save_confirm_message', {name: name}),
-        detail: Editor.T('MESSAGE.code_editor.save_confirm_detail')
+        detail: Editor.T('MESSAGE.code_editor.save_confirm_detail'),
+        defaultId: 0,
+        cancelId: 1,
+        noLink: true,
       });
     }
 
@@ -45,7 +48,10 @@
         buttons: ['Load','Cancel'],
         title: 'Script changed outside',
         message: `${name} has changed in other place, do you want to load the changes?`,
-        detail: 'Your changes will be lost if you load it.'
+        detail: 'Your changes will be lost if you load it.',
+        defaultId: 0,
+        cancelId: 1,
+        noLink: true,
       });
     }
 
