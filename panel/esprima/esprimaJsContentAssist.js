@@ -2418,6 +2418,9 @@ EsprimaJavaScriptContentAssistProvider.prototype = {
      * @param {String} fileName
      */
     computeSummary: function(buffer, fileName) {
+        // windows file name will includes ':', and ':' is used to separate
+        // return type and parameters in function description
+        fileName = fileName.replace(':', '/');
         var root = mVisitor.parse(buffer);
         if (!root) {
             // assume a bad parse
