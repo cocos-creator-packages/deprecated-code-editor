@@ -70,6 +70,8 @@ class CodeEditor {
     this._path = path;
     this._uuid = uuid;
     this._isJSFile = Path.extname(path) === '.js';
+    // record if the file content is changed
+    this._fileContentChanged = false;
 
     this.aceEditor = window.ace.edit('editor');
     initEditor(this);
@@ -82,7 +84,7 @@ class CodeEditor {
     // handle save operation
     this.aceEditor.commands.addCommand({
       name: 'save content',
-      readOnly: false,
+      readOnly: true,
       bindKey: {
         win: 'Ctrl-S',
         mac: 'Command-S'
@@ -94,6 +96,7 @@ class CodeEditor {
     });
 
     this.aceEditor.getSession().on('change', () => {
+      this._fileContentChanged = true;
       setTimeout(() => {
         var dirty = !this.aceEditor.getSession().getUndoManager().isClean();
         Editor.sendToCore('code-editor:update-title', self._url, dirty);
@@ -102,12 +105,17 @@ class CodeEditor {
   }
 
   save () {
+    if (!this._fileContentChanged)
+      return;
+    
     let text = this.aceEditor.getValue();
     Editor.sendToCore('asset-db:save', this._url, text);
 
     // TODO: we should use asset-db:asset-changed instead
     this.aceEditor.getSession().getUndoManager().markClean();
     Editor.sendToCore('code-editor:update-title', this._url, false);
+
+    this._fileContentChanged = false;
   }
 }
 
