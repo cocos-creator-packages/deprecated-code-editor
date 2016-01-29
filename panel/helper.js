@@ -5,6 +5,7 @@ const Path = require('path');
 const LangTools = ace.require('ace/ext/language_tools');
 
 var projectRoot = Path.join(Editor.projectInfo.path, 'assets');
+let cocosCompleter;
 
 function disableCompleter(editor, completer) {
   for (var i in editor.completers) {
@@ -79,4 +80,13 @@ exports.disableSystemCompleters = function(editor) {
   disableCompleter(editor, LangTools.keyWordCompleter);
   disableCompleter(editor, LangTools.snippetCompleter);
   disableCompleter(editor, LangTools.textCompleter);
+}
+
+exports.setCocosCompleter = function(completer) {
+  cocosCompleter = completer;
+}
+
+exports.disableCocosCompleter = function() {
+  var editor = window.ace.edit('editor');
+  disableCompleter(editor, cocosCompleter);
 }

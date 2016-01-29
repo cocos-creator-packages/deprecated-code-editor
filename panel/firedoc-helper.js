@@ -15,7 +15,9 @@ var basicTypeMap = {
   boolean : 'Boolean',
   Boolean : 'Boolean',
   object  : 'Object',
-  Object  : 'Object'
+  Object  : 'Object',
+  '*'     : 'Object',
+  any     : 'Object'       
 };
 
 var basicTypeWithoutConflictMap = {
@@ -26,7 +28,9 @@ var basicTypeWithoutConflictMap = {
   array   : 'Array',
   Array   : 'Array',
   boolean : 'Boolean',
-  Boolean : 'Boolean'
+  Boolean : 'Boolean',
+  '*'     : 'Object',
+  any     : 'Object' 
 };
 
 function transforType(module, type, ignoreConflict) {
