@@ -33,12 +33,34 @@ function retrieveSummary(fileName) {
     return null;
 }
 
+// record files that are in computing summary to avoid requiring circle
+// for example, a require b, and b require a, it will cause dead loop 
+// if don't recording which file is in computing summary
+var filesInComputingSummary = {};
+
 function saveFileSummary(fileName, fileContent, forceSave) {
   // if the summary is exists, then return
   if (instance.fileSummaries[fileName] && !forceSave)
-    return;
+    return instance.fileSummaries[fileName];
 
+  // the file is in computing summary, we shoud return to avoid dead loop
+  if (filesInComputingSummary[fileName]) {
+    console.log('Warning: require circle in ' + fileName);
+    Helper.disableCocosCompleter();
+
+    throw ('Warning: require circle in ' + fileName);
+  }
+
+  if (instance.projectPath === fileName) {
+    Helper.disableCocosCompleter();
+    console.log('Warning: require circle in ' + fileName);
+    throw ('Warning: require circle in ' + fileName);
+  }
+
+  filesInComputingSummary[fileName] = true;
   var summary = instance.esprima.computeSummary(fileContent, fileName);
+  delete filesInComputingSummary[fileName];
+
   instance.fileSummaries[fileName] = summary;
   return summary;
 }

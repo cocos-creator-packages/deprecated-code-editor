@@ -45,6 +45,8 @@ let fireballCompleter = {
   identifierRegexps: [ /[a-zA-Z_0-9\$\-\u00A2-\uFFFF.]/ ]
 };
 
+CodeHelper.setCocosCompleter(fireballCompleter);
+
 function initEditor(editor) {
   var ace = editor.aceEditor;
   ace.setOptions({
