@@ -20,20 +20,22 @@ module.exports = {
     Editor.Panel.close('code-editor.panel');
   },
 
-  'code-editor:open-by-uuid' ( event, uuid ) {
-    let url = Editor.assetdb.uuidToUrl( uuid );
-    let path = Editor.assetdb.uuidToFspath( uuid );
+  messages: {
+    'open-by-uuid' ( event, uuid ) {
+      let url = Editor.assetdb.uuidToUrl( uuid );
+      let path = Editor.assetdb.uuidToFspath( uuid );
 
-    Editor.Panel.open('code-editor.panel', {
-      url: url,
-      path: path,
-      uuid: uuid
-    });
+      Editor.Panel.open('code-editor.panel', {
+        url: url,
+        path: path,
+        uuid: uuid
+      });
 
-    _updateTitile( url, false );
-  },
+      _updateTitile( url, false );
+    },
 
-  'code-editor:update-title' ( event, url, dirty ) {
-    _updateTitile(url, dirty);
-  },
+    'update-title' ( event, url, dirty ) {
+      _updateTitile(url, dirty);
+    },
+  }
 };
