@@ -111,7 +111,7 @@ class CodeEditor {
       return;
     
     let text = this.aceEditor.getValue();
-    Editor.sendToCore('asset-db:save', this._url, text);
+    Editor.sendToCore('asset-db:save-exists', this._url, text);
 
     // TODO: we should use asset-db:asset-changed instead
     this.aceEditor.getSession().getUndoManager().markClean();
