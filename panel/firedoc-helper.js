@@ -267,10 +267,10 @@ var Definition = function(typeName, description, range, path) {
   this.description = description;
 };
 
-exports.generateBuiltin = function(enginePath, eidtorPath, assetDbPath) {
+exports.generateBuiltin = function(enginePath) {
   var doc = new Firedoc({
     cwd: Helper.editorRoot,
-    paths: [enginePath, eidtorPath, assetDbPath],
+    paths: [enginePath],
     parseOnly: true
   });
 
