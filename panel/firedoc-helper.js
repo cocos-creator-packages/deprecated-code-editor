@@ -78,10 +78,13 @@ function generateMember(property) {
     else
       description = description.concat('undefined');
 
+    // need ':' even there is not any parameter to mark it as a function type
+    description = description.concat(':');
+    
     // parameter names
     var params = property.params;
     if (params) {
-      description = description.concat(':');
+      
       for (var i in params) {
         var param = params[i];
         description = description.concat(param.name);
@@ -264,10 +267,10 @@ var Definition = function(typeName, description, range, path) {
   this.description = description;
 };
 
-exports.generateBuiltin = function(enginePath, eidtorPath, assetDbPath) {
+exports.generateBuiltin = function(enginePath) {
   var doc = new Firedoc({
     cwd: Helper.editorRoot,
-    paths: [enginePath, eidtorPath, assetDbPath],
+    paths: [enginePath],
     parseOnly: true
   });
 
