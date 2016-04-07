@@ -10,10 +10,8 @@
   const CodeEditor = require('./editor.js');
 
   const enginePath = Editor.url('app://utils/api/engine');
-  const editorPath = Editor.url('app://utils/api/editor-framework');
-  const assetdbPath = Editor.url('app://utils/api/asset-db');
 
-  require('./firedoc-helper.js').generateBuiltin(enginePath, editorPath, assetdbPath);
+  require('./firedoc-helper.js').generateBuiltin(enginePath);
 
   let codeEditor = null;
 
