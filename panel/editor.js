@@ -101,7 +101,7 @@ class CodeEditor {
       this._fileContentChanged = true;
       setTimeout(() => {
         var dirty = !this.aceEditor.getSession().getUndoManager().isClean();
-        Editor.sendToCore('code-editor:update-title', self._url, dirty);
+        Editor.Ipc.sendToMain('code-editor:update-title', self._url, dirty);
       },1);
     });
   }
@@ -111,11 +111,11 @@ class CodeEditor {
       return;
     
     let text = this.aceEditor.getValue();
-    Editor.sendToCore('asset-db:save-exists', this._url, text);
+    Editor.Ipc.sendToMain('asset-db:save-exists', this._url, text);
 
     // TODO: we should use asset-db:asset-changed instead
     this.aceEditor.getSession().getUndoManager().markClean();
-    Editor.sendToCore('code-editor:update-title', this._url, false);
+    Editor.Ipc.sendToMain('code-editor:update-title', this._url, false);
 
     this._fileContentChanged = false;
   }

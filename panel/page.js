@@ -102,7 +102,7 @@
     });
   }
 
-  ipcRenderer.on('panel:run', (event, argv) => {
+  ipcRenderer.on('editor:panel-run', (event, argv) => {
     let res = _confirmClose();
     switch ( res ) {
       // save
@@ -156,7 +156,7 @@
       codeEditor._path = result.destPath;
 
       let dirty = !codeEditor.aceEditor.getSession().getUndoManager().isClean();
-      Editor.sendToCore('code-editor:update-title', codeEditor._url, dirty);
+      Editor.Ipc.sendToMain('code-editor:update-title', codeEditor._url, dirty);
     });
   });
 
