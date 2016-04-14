@@ -9,7 +9,7 @@
   const Path = require('fire-path');
   const CodeEditor = require('./editor.js');
 
-  const enginePath = Editor.url('app://utils/api/engine');
+  const enginePath = Editor.url('unpack://utils/api/engine');
 
   require('./firedoc-helper.js').generateBuiltin(enginePath);
 
