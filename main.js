@@ -6,7 +6,7 @@ function _updateTitile ( url, dirty ) {
     }
 
     let dirtyMark = dirty ? '*' : '';
-    let editorWin = Editor.Panel.findWindow('code-editor.panel');
+    let editorWin = Editor.Panel.findWindow('code-editor');
     editorWin.nativeWin.setTitle(
       `Code Editor - ${url}${dirtyMark}`
     );
@@ -17,7 +17,7 @@ module.exports = {
   },
 
   unload () {
-    Editor.Panel.close('code-editor.panel');
+    Editor.Panel.close('code-editor');
   },
 
   messages: {
@@ -25,7 +25,7 @@ module.exports = {
       let url = Editor.assetdb.uuidToUrl( uuid );
       let path = Editor.assetdb.uuidToFspath( uuid );
 
-      Editor.Panel.open('code-editor.panel', {
+      Editor.Panel.open('code-editor', {
         url: url,
         path: path,
         uuid: uuid

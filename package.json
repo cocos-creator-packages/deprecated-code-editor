@@ -7,13 +7,12 @@
   "dependencies": {
     "firedoc": "1.12.0"
   },
-  "panels": {
-    "panel": {
-      "frame": "panel/index.html",
-      "type": "simple",
-      "title": "Code Editor",
-      "width": 800,
-      "height": 600
-    }
+  "panel": {
+    "main": "panel/index.html",
+    "ui": "polymer",
+    "type": "simple",
+    "title": "Code Editor",
+    "width": 800,
+    "height": 600
   }
 }
