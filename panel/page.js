@@ -100,7 +100,7 @@
     });
   }
 
-  ipcRenderer.on('editor:panel-run', (event, argv) => {
+  ipcRenderer.on('editor:panel-run', (event, panelID, argv) => {
     let res = _confirmClose();
     switch ( res ) {
       // save
