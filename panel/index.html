@@ -41,7 +41,7 @@
 
     <script src="app://editor/page/page-init.js"></script>
     <script>
-      Editor.sendToCore('metrics:track-event', {
+      Editor.Ipc.sendToMain('metrics:track-event', {
           category: 'Project',
           action: 'Open Code Editor'
       });
