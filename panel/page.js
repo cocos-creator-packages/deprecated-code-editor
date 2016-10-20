@@ -174,7 +174,7 @@
       // save
       case 0:
       codeEditor.save();
-      event.returnValue = true;
+      // event.returnValue = true;
       return;
 
       // cancel
@@ -184,7 +184,7 @@
 
       // don't save
       case 2:
-      event.returnValue = true;
+      // event.returnValue = true;
       return;
     }
   });
