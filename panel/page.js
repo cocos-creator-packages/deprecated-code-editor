@@ -16,6 +16,9 @@
   let codeEditor = null;
 
   function _confirmClose () {
+    if (!codeEditor){
+      return 2;
+    }
     var dirty = !codeEditor.aceEditor.getSession().getUndoManager().isClean();
     if ( dirty ) {
       let name = Path.basename(codeEditor._path);
@@ -121,6 +124,9 @@
   });
 
   ipcRenderer.on('asset-db:asset-changed', function ( event, result ) {
+    if (!codeEditor) {
+      return;
+    }
     if ( codeEditor._uuid !== result.uuid ) {
       return;
     }
@@ -144,6 +150,9 @@
   });
 
   ipcRenderer.on('asset-db:assets-moved', function ( event, results ) {
+    if (!codeEditor) {
+      return;
+    }
     results.forEach(result => {
       if ( codeEditor._uuid !== result.uuid ) {
         return;
@@ -159,6 +168,10 @@
   });
 
   document.addEventListener('DOMContentLoaded', () => {
+    if (!Editor.argv.path) {
+      Editor.Panel.close('code-editor');
+      return;
+    }
     codeEditor = new CodeEditor(
       Editor.argv.path,
       Editor.argv.url,
